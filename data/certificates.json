@@ -1,0 +1,46 @@
+[
+    {
+        "id": "1",
+        "title": "Java Basic",
+        "issuer": "Hackerrank",
+        "date": "2024-04-30",
+        "description": "Hackerrank certificate for passing the Java (Basic) skill test",
+        "skills": ["Java", "OOP", "Data Structures"],
+        "credentialId": "F959886907CB",
+        "level": "Beginner",
+        "category": "Programming"
+    },
+    {
+        "id": " ",
+        "title": "",
+        "issuer": "",
+        "date": "",
+        "description": "",
+        "skills": "",
+        "credentialId": "",
+        "level": "",
+        "category": ""
+    },
+    {
+        "id": "",
+        "title": "",
+        "issuer": "",
+        "date": "",
+        "description": "",
+        "skills": "",
+        "credentialId": "",
+        "level": "",
+        "category": ""
+    },
+    {
+        "id": "",
+        "title": "",
+        "issuer": "",
+        "date": "",
+        "description": "",
+        "skills": "",
+        "credentialId": "",
+        "level": "",
+        "category": ""
+    }
+]
