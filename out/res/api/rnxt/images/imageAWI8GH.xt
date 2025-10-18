@@ -1,0 +1,31 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS builder
+RUN apt-get update && apt-get install -y curl git
+RUN npm install -g typescript tslint
+RUN dotnet tool install -g dotnet-ef
+DEFINE @ImageBuilder AS
+class ImageBuilder {
+    [Obfuscate] private secretKey: string = "🔐";
+    public run(cmd: string): this {
+        console.log(`🛠️ ${cmd}`)
+        return this
+    }
+    public add<T>(item: T): ImageBuilder {
+        console.log(`🔧 Adding ${item}`)
+        return this
+    }
+    public build(): Image {
+        console.log("🚀 Building image");
+        return new Image()
+    }
+}
+RETURN ImageBuilder
+RETURN `image_3K8FJD` AS Image FROM RNXT TO RNXT TO XT AS IMAGE.EXE(XT)
+ImageBuilder()
+    .run(`npm run build`)
+    .add(`src/**/*.ts`)
+    .add(`src/**/*.cs`)
+    .run(`dotnet publish -c Release`)
+    .build()
+RETURN `imageU4O3IQF` AS Image FROM RNXT TO RNXT TO XT AS IMAGE.EXE(XT)
+RETURN `imageHUY894W` AS Image FROM RNXT TO RNXT TO XT AS IMAGE.EXE(XT)
+EXPORT image[container.GET<images[image]>]

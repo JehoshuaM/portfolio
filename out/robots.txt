@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jehoshua.netlify.app/sitemap.xml

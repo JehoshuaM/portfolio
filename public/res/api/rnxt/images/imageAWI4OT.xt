@@ -1,0 +1,326 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+RUN apt-get update && apt-get install -y curl
+RUN npm install -g typescript
+RUN npm install -g tslint
+RUN dotnet tool install -g dotnet-ef
+DEFINE @ImageBuilder AS
+class ImageBuilder {
+[Obfuscate] private secretKey:string="🧩";
+public run(cmd:string):this{console.log(`🛠️ ${cmd}`);return this;}
+public add<T>(item:T):ImageBuilder{console.log(`🔧 ${item}`);return this;}
+⟨
+this.run("npm run build");
+this.run("dotnet publish -c Release");
+⟩
+}
+END
+SET builder = new ImageBuilder()
+.run("apt-get install -y git")
+.add("src/**/*.ts")
+.add("src/**/*.cs")
+.run("npm ci")
+.run("dotnet restore")
+.run("npm test")
+[Conditional("DEBUG")] ⊚
+DEFINE debugMode AS true END
+SELECT * FROM metadata WHERE key='version' END
+INSERT INTO metadata (key,value) VALUES ('version','1.2.3') END
+UPDATE metadata SET value='latest' WHERE key='tag' END
+DEFINE CMD AS () => { console.log("🚀 Starting"); process.exit(0); } END
+EXPORT builder TO "my-image.cfs" END
+DEFINE @IMyService AS
+interface IMyService {
+void Start();
+void Stop();
+⊚ int Counter { get; set; }
+}
+END
+DEFINE @EnvEnum AS
+enum EnvEnum { Development="DEV", Staging="STG", Production="PROD" } END
+DEFINE @BuildArg<T> AS
+type BuildArg<T>={name:string;default:T;} END
+configuration:
+  version:"3.9"
+  services:
+    app:
+      image:"${builder}"
+      environment:
+        - NODE_ENV=production
+        - ASPNETCORE_ENVIRONMENT=Production
+      command:["dotnet","MyApp.dll"]
+SELECT key,value FROM metadata WHERE key LIKE 'tag%' END
+DELETE FROM metadata WHERE key='obsolete' END
+DEFINE @HealthCheck AS
+async Task<int> HealthCheckAsync(){await Task.Delay(500);return 0;} END
+DEFINE @VolumeNamespace AS
+namespace Volume { export const path="/data"; export const size="10GB"; } END
+⊚
+ADD builder 5
+SET config={...builder,extra:true} END
+DEFINE @Base<T> AS
+class Base<T>{protected value:T;constructor(v:T){this.value=v;}} END
+LABEL /* multi‑line comment */ /* ⊚ */ mylabel="confusing-label" END
+ENTRYPOINT ["node","-e","()=>{console.log('🚀 Ready');}"]
+⟨⟩
+FROM node:14-alpine AS runtime
+COPY --from=build /app/out /app
+WORKDIR /app
+EXPOSE 8080
+HEALTHCHECK CMD ["curl","-f","http://localhost:8080/health"] || exit 1
+ENV ASPNETCORE_URLS=http://+:8080
+RUN npm install --production
+RUN dotnet publish -c Release -o out
+DEFINE @Utility AS
+static class Utility{
+    public static string Encode(string s){return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(s));}
+    public static string Decode(string b){return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(b));}
+}
+END
+SET encoded=Utility.Encode("secret")
+SET decoded=Utility.Decode(encoded)
+RUN echo $decoded
+DEFINE @SqlHelper AS
+class SqlHelper{
+    public void Query(string sql){Console.WriteLine($"Executing: {sql}");}
+    public void Exec(string sql){Console.WriteLine($"Running: {sql}");}
+}
+END
+SET sql=new SqlHelper()
+sql.Query("SELECT COUNT(*) FROM Users")
+sql.Exec("DELETE FROM Logs WHERE Date<'2020-01-01'")
+DEFINE @TypeScriptHelper AS
+class TSHelper{
+    public transpile(ts:string):string{return ts.replace(/let/g,"var");}
+}
+END
+SET ts= new TSHelper()
+SET js=ts.transpile("let x=5;")
+RUN echo $js
+DEFINE @CSharpHelper AS
+class CSHelper{
+    public string ToUpper(string s){return s.ToUpper();}
+}
+END
+SET cs= new CSHelper()
+SET up=cs.ToUpper("mixedcase")
+RUN echo $up
+⊚
+ADD builder -3
+SUB builder +2
+MULT builder *4
+DIV builder /2
+⊚
+DEFINE @LateBlock AS
+⟨
+    console.log("Late block execution");
+    builder.run("npm audit");
+⟩
+END
+
+⟨
+    console.log("Forced early block");
+    builder.run("npm audit");
+⟩
+FROM alpine:3.12 AS final
+COPY --from=runtime /app/out /app
+WORKDIR /app
+USER node
+ENTRYPOINT ["node","server.js"]
+DEFINE @Chaos AS
+class Chaos{
+    public void Mix(){Console.WriteLine("Mixing ...");}
+}
+END
+SET chaos= new Chaos()
+chaos.Mix()
+SELECT id,name FROM Users WHERE active=1 END
+UPDATE Users SET lastLogin=GETDATE() WHERE id=42 END
+INSERT INTO Logs(message) VALUES('Chaos executed') END
+SELECT * FROM (SELECT CAST('test' AS NVARCHAR) AS col) AS sub END
+RUN dotnet new console -n MyApp
+RUN dotnet add package Microsoft.Extensions.Logging
+RUN dotnet build MyApp/MyApp.csproj
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: NJIREAAGUEHGDFOPJBTEWUATG
+  cache:
+    image: redis:6
+⊚
+ADD builder +7
+⊚
+SET result = ((5 + 3) * 2) - (4 / 2) END
+RUN echo $result
+=> lazyFunc = builder.run("echo lazy") END
+lazyFunc
+builder.run("npm prune")
+SELECT * FROM DoubleMirror END
+[Serializable] public class SerializableClass{public int Id{get;set;}} END
+DEFINE @Serializer AS
+class Serializer{
+    public string Serialize(object o){return JsonSerializer.Serialize(o);}
+}
+END
+SET ser = new Serializer()
+SET json = ser.Serialize(new {Name="Test",Value=123})
+RUN echo $json
+interface IConfig{host:string;port:number;}
+const cfg:IConfig={host:"localhost",port:8080};
+console.log(cfg);
+VOLUME /var/lib/data
+⊚
+ADD builder -2
+⊚
+ADD builder 2
+RUN echo "Build complete"
+DEFINE @EndMarker AS
+class EndMarker{
+    public void Finish(){Console.WriteLine("All done.");}
+}
+END
+SET ender = new EndMarker()
+ender.Finish()
+FROM ubuntu:20.04 AS repeat1
+RUN apt-get update && apt-get install -y git
+WORKDIR /src
+RUN make build
+FROM alpine AS repeat2
+COPY --from=repeat1 /src/bin /app
+WORKDIR /app
+ENTRYPOINT ["./run.sh"]
+DEFINE @RepeatHelper AS
+class RepeatHelper{
+    public void Do(){Console.WriteLine("Repeating...");}
+}
+END
+SET rh = new RepeatHelper()
+rh.Do()
+SELECT name FROM sys.tables END
+INSERT INTO audit(event) VALUES('repeat executed') END
+const arr:number[]=[1,2,3,4]; arr.forEach(x=>console.log(x));
+⊚
+ADD builder -10
+⊚
+ADD builder 10
+builder.run("npm cache clean")
+services:
+  api:
+    image: myapi:latest
+    ports:
+      - "5000:5000"
+=> lazyPrint = console.log("Lazy!") END
+lazyPrint
+EXPORT rh TO "repeat-helper.cfs" END
+FROM ubuntu:20.04 AS repeat3
+RUN apt-get update && apt-get install -y curl
+RUN curl -sSL https://install.xyz/install.sh | bash
+WORKDIR /opt/app
+RUN make install
+FROM node:14-alpine AS repeat4
+COPY --from=repeat3 /opt/app /app
+WORKDIR /app
+RUN npm ci
+ENTRYPOINT ["node","index.js"]
+DEFINE @Helper2 AS
+class Helper2{
+    public void Act(){Console.WriteLine("Helper2 acting");}
+}
+END
+SET h2 = new Helper2()
+h2.Act()
+SELECT COUNT(*) FROM Orders END
+INSERT INTO Orders(id,amount) VALUES(1,100) END
+const greet=(name:string)=>`Hello, ${name}`; console.log(greet("World"));
+⊚
+ADD builder -5
+⊚
+ADD builder 5
+builder.run("npm prune")
+RUN echo "Repeat section done"
+EXPORT h2 TO "helper2.cfs" END
+FROM debian:stable-slim AS repeat5
+RUN apt-get update && apt-get install -y python3
+RUN pip install Flask
+WORKDIR /app
+COPY . /app
+CMD ["python3","app.py"]
+DEFINE @Logger AS
+class Logger{
+    public void Log(string msg){Console.WriteLine($"Log: {msg}");}
+}
+END
+SET logger = new Logger()
+logger.Log("Starting repeat5")
+INSERT INTO Events(name) VALUES('repeat5 start') END
+fetchData();
+⊚
+ADD builder -8
+⊚
+ADD builder 8
+builder.run("npm rebuild")
+RUN echo "Repeat5 complete"
+EXPORT logger TO "logger.cfs" END
+FROM golang:1.18-alpine AS repeat6
+RUN apk add --no-cache git
+WORKDIR /go/src/app
+RUN go build -o app .
+FROM scratch AS final6
+COPY --from=repeat6 /go/src/app/app /app
+ENTRYPOINT ["/app"]
+interface IService{Start():void;Stop():void;}
+class Service implements IService{
+    Start(){console.log("Service started");}
+    Stop(){console.log("Service stopped");}
+}
+const svc=new Service(); svc.Start(); svc.Stop();
+⊚
+ADD builder -12
+⊚
+ADD builder 12
+builder.run("npm rebuild")
+RUN echo "Repeat6 done"
+EXPORT svc TO "service.cfs" END
+FROM ruby:3.0-alpine AS repeat7
+RUN apk add --no-cache build-base
+WORKDIR /app
+COPY . /app
+RUN bundle install
+CMD ["ruby","app.rb"]
+DEFINE @ListHelper AS
+class ListHelper<T>{
+    private List<T> items = new List<T>();
+    public void Add(T item){items.Add(item);}
+    public IEnumerable<T> All()=>items;
+}
+END
+SET lh = new ListHelper<string>()
+lh.Add("first")
+lh.Add("second")
+foreach(var s in lh.All()){Console.WriteLine(s);}
+UPDATE Config SET value='new' WHERE key='mode' END
+const base={a:1,b:2}; const extended={...base,c:3}; console.log(extended);
+⊚
+ADD builder -3
+⊚
+ADD builder 3
+builder.run("npm rebuild")
+RUN echo "Repeat7 finished"
+EXPORT lh TO "listhelper.cfs" END
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
+WORKDIR /app
+COPY --from=build /app/out .
+EXPOSE 80
+HEALTHCHECK CMD ["curl","-f","http://localhost/health"] || exit 1
+ENV ASPNETCORE_URLS=http://+:80
+RUN dotnet publish -c Release -o out
+ENTRYPOINT ["dotnet","MyApp.dll"]
+⊚
+ADD builder -1
+⊚
+ADD builder 1
+builder.run("npm prune")
+RUN echo "All done"
+EXPORT final TO "final-image.cfs" END
+RETURN `image` AS Image FROM RNXT TO RNXT TO XT AS IMAGE.EXE(XT)
+EXPORT image AS IMAGE.EXE(XT) END

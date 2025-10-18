@@ -1,0 +1,21 @@
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+self["webpackHotUpdate_N_E"]("app/layout",{
+
+/***/ "(app-pages-browser)/./node_modules/next/font/local/target.css?{\"path\":\"app\\\\layout.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../public/assets/horizon_font/Horizon-Font/Horizon.woff2\",\"variable\":\"--font-heading\",\"display\":\"swap\"}],\"variableName\":\"horizon\"}":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/font/local/target.css?{"path":"app\\layout.tsx","import":"","arguments":[{"src":"../public/assets/horizon_font/Horizon-Font/Horizon.woff2","variable":"--font-heading","display":"swap"}],"variableName":"horizon"} ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+eval(__webpack_require__.ts("// extracted by mini-css-extract-plugin\nmodule.exports = {\"style\":{\"fontFamily\":\"'__horizon_dc5380', '__horizon_Fallback_dc5380'\"},\"className\":\"__className_dc5380\",\"variable\":\"__variable_dc5380\"};\n    if(true) {\n      // 1760778181985\n      var cssReload = __webpack_require__(/*! ./node_modules/next/dist/compiled/mini-css-extract-plugin/hmr/hotModuleReplacement.js */ \"(app-pages-browser)/./node_modules/next/dist/compiled/mini-css-extract-plugin/hmr/hotModuleReplacement.js\")(module.id, {\"publicPath\":\"/_next/\",\"esModule\":false,\"locals\":true});\n      module.hot.dispose(cssReload);\n      \n    }\n  //# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKGFwcC1wYWdlcy1icm93c2VyKS8uL25vZGVfbW9kdWxlcy9uZXh0L2ZvbnQvbG9jYWwvdGFyZ2V0LmNzcz97XCJwYXRoXCI6XCJhcHBcXFxcbGF5b3V0LnRzeFwiLFwiaW1wb3J0XCI6XCJcIixcImFyZ3VtZW50c1wiOlt7XCJzcmNcIjpcIi4uL3B1YmxpYy9hc3NldHMvaG9yaXpvbl9mb250L0hvcml6b24tRm9udC9Ib3Jpem9uLndvZmYyXCIsXCJ2YXJpYWJsZVwiOlwiLS1mb250LWhlYWRpbmdcIixcImRpc3BsYXlcIjpcInN3YXBcIn1dLFwidmFyaWFibGVOYW1lXCI6XCJob3Jpem9uXCJ9IiwibWFwcGluZ3MiOiJBQUFBO0FBQ0Esa0JBQWtCLFNBQVMsK0RBQStEO0FBQzFGLE9BQU8sSUFBVTtBQUNqQjtBQUNBLHNCQUFzQixtQkFBTyxDQUFDLHdNQUFpSSxjQUFjLHNEQUFzRDtBQUNuTyxNQUFNLFVBQVU7QUFDaEI7QUFDQTtBQUNBIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vX05fRS8uL25vZGVfbW9kdWxlcy9uZXh0L2ZvbnQvbG9jYWwvdGFyZ2V0LmNzcz84MmU5Il0sInNvdXJjZXNDb250ZW50IjpbIi8vIGV4dHJhY3RlZCBieSBtaW5pLWNzcy1leHRyYWN0LXBsdWdpblxubW9kdWxlLmV4cG9ydHMgPSB7XCJzdHlsZVwiOntcImZvbnRGYW1pbHlcIjpcIidfX2hvcml6b25fZGM1MzgwJywgJ19faG9yaXpvbl9GYWxsYmFja19kYzUzODAnXCJ9LFwiY2xhc3NOYW1lXCI6XCJfX2NsYXNzTmFtZV9kYzUzODBcIixcInZhcmlhYmxlXCI6XCJfX3ZhcmlhYmxlX2RjNTM4MFwifTtcbiAgICBpZihtb2R1bGUuaG90KSB7XG4gICAgICAvLyAxNzYwNzc4MTgxOTg1XG4gICAgICB2YXIgY3NzUmVsb2FkID0gcmVxdWlyZShcIkM6L1VzZXJzL0FkbWluL0RvY3VtZW50cy9wcm9qZWN0cy9wb3J0Zm9saW8vbm9kZV9tb2R1bGVzL25leHQvZGlzdC9jb21waWxlZC9taW5pLWNzcy1leHRyYWN0LXBsdWdpbi9obXIvaG90TW9kdWxlUmVwbGFjZW1lbnQuanNcIikobW9kdWxlLmlkLCB7XCJwdWJsaWNQYXRoXCI6XCIvX25leHQvXCIsXCJlc01vZHVsZVwiOmZhbHNlLFwibG9jYWxzXCI6dHJ1ZX0pO1xuICAgICAgbW9kdWxlLmhvdC5kaXNwb3NlKGNzc1JlbG9hZCk7XG4gICAgICBcbiAgICB9XG4gICJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(app-pages-browser)/./node_modules/next/font/local/target.css?{\"path\":\"app\\\\layout.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../public/assets/horizon_font/Horizon-Font/Horizon.woff2\",\"variable\":\"--font-heading\",\"display\":\"swap\"}],\"variableName\":\"horizon\"}\n"));
+
+/***/ })
+
+});
