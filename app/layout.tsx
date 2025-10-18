@@ -17,7 +17,7 @@ const horizon = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Jehoshua | Young Developer Portfolio - Java, JavaScript, Minecraft Plugins',
+  title: 'Jehoshua | Portfolio',
   description: 'Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, Next.js, and Minecraft plugin development. Explore innovative projects and creative solutions.',
   keywords: 'Jehoshua, Young Developer, Java Developer, JavaScript Developer, Next.js, Minecraft Plugins, Teen Developer, Portfolio, Web Development, Programming, Software Development, Full Stack Developer',
   authors: [{ name: 'Jehoshua' }],
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://jehoshua.netlify.app',
-    title: 'Jehoshua | Young Developer Portfolio - Java, JavaScript, Minecraft Plugins',
+    title: 'Jehoshua | Portfolio',
     description: 'Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development. Explore innovative projects and creative solutions.',
     siteName: 'Jehoshua Portfolio',
     images: [
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jehoshua | Young Developer Portfolio - Java, JavaScript, Minecraft Plugins',
+    title: 'Jehoshua | Portfolio',
     description: 'Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development.',
     creator: '@jehoshua',
     images: ['/og-image.jpg'],
@@ -82,10 +82,10 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} ${horizon.variable} scroll-smooth`}>
       <head>
         <link rel="canonical" href="https://jehoshua.netlify.app" />
-        <meta name="geo.region" content="US" />
-        <meta name="geo.placename" content="United States" />
+        <meta name="geo.region" content="IND" />
+        <meta name="geo.placename" content="India" />
         <meta name="ICBM" content="39.8283, -98.5795" />
-        <meta name="DC.title" content="Jehoshua - Young Developer Portfolio" />
+        <meta name="DC.title" content="Jehoshua - Portfolio" />
         <meta name="DC.creator" content="Jehoshua" />
         <meta name="DC.subject" content="Web Development, Programming, Java, JavaScript, Minecraft Plugins" />
         <meta name="DC.description" content="Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development." />
@@ -107,9 +107,9 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Jehoshua",
               "url": "https://jehoshua.netlify.app",
-              "image": "https://jehoshua.netlify.app/og-image.jpg",
+              "image": "https://jehoshua.netlify.app/pfp.jpg",
               "sameAs": [
-                "https://github.com/HerobrineTG",
+                "https://github.com/JehoshuaM",
                 "https://www.linkedin.com/in/jehoshua-m/",
                 "https://discord.com/users/herobrinetg"
               ],
@@ -127,12 +127,12 @@ export default function RootLayout({
                 "Software Engineering"
               ],
               "description": "A passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development.",
-              "birthDate": "2009",
-              "nationality": "American",
+              "birthDate": "2010",
+              "nationality": "Indian",
               "email": "jehoshua.dev@gmail.com",
               "address": {
                 "@type": "PostalAddress",
-                "addressCountry": "US"
+                "addressCountry": "IND"
               }
             })
           }}
