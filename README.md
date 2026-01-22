@@ -1,4 +1,4 @@
-# Jehoshua's Portfolio
+# FabledRuns's Portfolio
 
 This is my personal portfolio, showcasing projects I’ve built in web development, Java, and Minecraft plugins. Everything here is fully functional and created by me.
 
@@ -25,7 +25,7 @@ This is my personal portfolio, showcasing projects I’ve built in web developme
 
 ## How to Explore
 
-1. Check out my live portfolio: [jehoshua.netlify.app](https://jehoshua.netlify.app)  
+1. Check out my live portfolio: [fabledruns.netlify.app](https://fabledruns.netlify.app)  
 2. Browse projects in this repo  
 3. Explore the code and see how each project works  
 
@@ -33,5 +33,5 @@ This is my personal portfolio, showcasing projects I’ve built in web developme
 
 ## Contact
 
-- **Portfolio:** [jehoshua.netlify.app](https://jehoshua.netlify.app)  
+- **Portfolio:** [fabledruns.netlify.app](https://fabledruns.netlify.app)  
 - **Email:** `jehoshua.dev@gmail.com` 

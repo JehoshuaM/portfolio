@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-    ArrowLeft, 
-    Plus, 
-    Edit, 
-    Trash2, 
-    Calendar, 
+import {
+    ArrowLeft,
+    Plus,
+    Edit,
+    Trash2,
+    Calendar,
     Lock,
     BookOpen,
     Save,
@@ -16,84 +16,84 @@ import {
     Clock,
     Tag,
 } from 'lucide-react';
-import { useSearchParams } from 'next/navigation'; // Import useSearchParams for Next.js 13+ App Router
-import ReactMarkdown from 'react-markdown'; // For rendering Markdown content
-import remarkGfm from 'remark-gfm'; // For GitHub Flavored Markdown
+import { useSearchParams } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
-// Mock components if not running in a Next.js environment with shadcn/ui
-// In a real Next.js project with shadcn/ui, these imports would be correct.
-// import { Button } from '@/components/ui/button'; 
-// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-// import { Badge } from '@/components/ui/badge';
+
+
+
+
+
 import React, { ReactNode, MouseEventHandler } from 'react';
 
 interface ButtonProps {
-  children: ReactNode;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  className?: string;
-  variant?: 'default' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
+    children: ReactNode;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    className?: string;
+    variant?: 'default' | 'outline' | 'ghost';
+    size?: 'sm' | 'md' | 'lg';
+    disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  children,
-  onClick,
-  className = '',
-  variant = 'default',
-  size = 'md',
-  disabled = false,
+    children,
+    onClick,
+    className = '',
+    variant = 'default',
+    size = 'md',
+    disabled = false,
 }) => (
-  <button
-    onClick={onClick}
-    className={`px-4 py-2 rounded-md transition-all duration-200 ${className} 
-      ${variant === 'default' ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}
+    <button
+        onClick={onClick}
+        className={`px-4 py-2 rounded-md transition-all duration-200 ${className} 
+      ${variant === 'default' ? 'bg-purple-600 text-white hover:bg-purple-700' : ''}
       ${variant === 'outline' ? 'border border-gray-400 text-gray-300 hover:bg-gray-700' : ''}
       ${variant === 'ghost' ? 'text-gray-300 hover:bg-gray-700' : ''}
       ${size === 'sm' ? 'text-sm px-3 py-1.5' : ''}
       ${size === 'lg' ? 'text-lg px-6 py-3' : ''}
       ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
     `}
-    disabled={disabled}
-  >
-    {children}
-  </button>
+        disabled={disabled}
+    >
+        {children}
+    </button>
 );
 
-// Shared props interface for other components
+
 interface WithChildren {
-  children: ReactNode;
-  className?: string;
+    children: ReactNode;
+    className?: string;
 }
 
 const Card: React.FC<WithChildren> = ({ children, className = '' }) => (
-  <div className={`rounded-lg shadow-lg ${className}`}>{children}</div>
+    <div className={`rounded-lg shadow-lg ${className}`}>{children}</div>
 );
 
 const CardHeader: React.FC<WithChildren> = ({ children, className = '' }) => (
-  <div className={`p-6 border-b border-gray-700 ${className}`}>{children}</div>
+    <div className={`p-6 border-b border-gray-700 ${className}`}>{children}</div>
 );
 
 const CardTitle: React.FC<WithChildren> = ({ children, className = '' }) => (
-  <h3 className={`text-xl font-semibold text-white ${className}`}>{children}</h3>
+    <h3 className={`text-xl font-semibold text-white ${className}`}>{children}</h3>
 );
 
 const CardDescription: React.FC<WithChildren> = ({ children, className = '' }) => (
-  <p className={`text-sm text-gray-400 ${className}`}>{children}</p>
+    <p className={`text-sm text-gray-400 ${className}`}>{children}</p>
 );
 
 const CardContent: React.FC<WithChildren> = ({ children, className = '' }) => (
-  <div className={`p-6 ${className}`}>{children}</div>
+    <div className={`p-6 ${className}`}>{children}</div>
 );
 
 const Badge: React.FC<WithChildren> = ({ children, className = '' }) => (
-  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-200 ${className}`}>
-    {children}
-  </span>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-200 ${className}`}>
+        {children}
+    </span>
 );
 
 
-import Link from 'next/link'; // Keep Next.js Link for navigation
+import Link from 'next/link';
 const rawBlogs: Partial<BlogPost>[] = require('@/data/blogs.json');
 
 interface BlogPost {
@@ -124,8 +124,8 @@ export default function BlogPage() {
     const [selectedTag, setSelectedTag] = useState('All');
     const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
     const [postToDelete, setPostToDelete] = useState<string | null>(null);
-    
-    // Form states
+
+
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tags, setTags] = useState('');
@@ -133,9 +133,9 @@ export default function BlogPage() {
 
     const categories = ['All', 'Web Development', 'Programming', 'Tutorials', 'Personal', 'Tech News', 'Projects'];
 
-    // Get URL search parameters
+
     const searchParams = useSearchParams();
-    const postId = searchParams.get('id'); // This will be the ID if present in /blog?id=<some_id>
+    const postId = searchParams.get('id');
 
     const blogs: BlogPost[] = rawBlogs.map((post) => ({
         id: post.id!,
@@ -152,22 +152,22 @@ export default function BlogPage() {
     }));
 
     useEffect(() => {
-        // Load posts from localStorage
+
         const savedPosts = localStorage.getItem('blog-posts');
         if (savedPosts) {
             setPosts(JSON.parse(savedPosts));
         } else {
-            // If no saved posts, initialize from blogs.json and save to localStorage
+
             setPosts(blogs);
             localStorage.setItem('blog-posts', JSON.stringify(blogs));
         }
-        
-        // Check if user is authenticated
+
+
         const authStatus = localStorage.getItem('blog-auth');
         if (authStatus === 'true') {
             setIsAuthenticated(true);
         }
-    }, []); // Empty dependency array means this runs once on mount
+    }, []);
 
     const handleAuth = () => {
         if (email === 'jehoshua.dev@gmail.com' && password === 'HerobrineTG') {
@@ -194,7 +194,7 @@ export default function BlogPage() {
 
     const calculateReadTime = (text: string): number => {
         const wordsPerMinute = 200;
-        const wordCount = text.split(/\s+/).filter(word => word.length > 0).length; // More robust word count
+        const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
         return Math.ceil(wordCount / wordsPerMinute);
     };
 
@@ -202,7 +202,7 @@ export default function BlogPage() {
         if (!title.trim() || !content.trim()) return;
 
         const newPost: BlogPost = {
-            id: Date.now().toString(), // Simple unique ID
+            id: Date.now().toString(),
             title: title.trim(),
             content: content.trim(),
             excerpt: content.trim().substring(0, 200) + '...',
@@ -217,8 +217,8 @@ export default function BlogPage() {
 
         const newPosts = [newPost, ...posts];
         savePosts(newPosts);
-        
-        // Reset form
+
+
         setTitle('');
         setContent('');
         setTags('');
@@ -229,8 +229,8 @@ export default function BlogPage() {
     const handleEditPost = () => {
         if (!editingPost || !title.trim() || !content.trim()) return;
 
-        const updatedPosts = posts.map(post => 
-            post.id === editingPost.id 
+        const updatedPosts = posts.map(post =>
+            post.id === editingPost.id
                 ? {
                     ...post,
                     title: title.trim(),
@@ -239,13 +239,13 @@ export default function BlogPage() {
                     tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag),
                     readTime: calculateReadTime(content.trim()),
                     category: category || post.category
-                  }
+                }
                 : post
         );
 
         savePosts(updatedPosts);
-        
-        // Reset form
+
+
         setTitle('');
         setContent('');
         setTags('');
@@ -270,8 +270,8 @@ export default function BlogPage() {
     const closeModals = () => {
         setShowCreateModal(false);
         setEditingPost(null);
-        setShowDeleteConfirmModal(false); // Close delete confirm modal too
-        setPostToDelete(null); // Clear post to delete
+        setShowDeleteConfirmModal(false);
+        setPostToDelete(null);
         setTitle('');
         setContent('');
         setTags('');
@@ -286,30 +286,30 @@ export default function BlogPage() {
         setCategory(post.category);
     };
 
-    // Filter posts based on search and category
+
     const filteredPosts = posts.filter(post => {
         const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                              post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                              post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-        
+            post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+
         const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
         const matchesTag = selectedTag === 'All' || post.tags.includes(selectedTag);
-        
+
         return matchesSearch && matchesCategory && matchesTag;
     });
 
-    // Get all unique tags
+
     const allTags = Array.from(new Set(posts.flatMap(post => post.tags)));
 
-    // Find the current post if an ID is in the URL
+
     const currentPost = postId ? posts.find(p => p.id === postId) : null;
 
-    // --- Render Logic ---
-    // If postId is present and a post is found, render the single post view
+
+
     if (postId && currentPost) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-purple-900 relative overflow-hidden font-inter">
-                {/* Custom CSS for gradients and animations */}
+            <div className="min-h-screen bg-gradient-to-br from-black via-black to-purple-900 relative overflow-hidden font-inter">
+                { }
                 <style jsx global>{`
                     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
                     .font-inter {
@@ -341,16 +341,16 @@ export default function BlogPage() {
                         100% { background-position: 0% 50%; }
                     }
                     .text-gradient {
-                        background: linear-gradient(to right, #a855f7, #e879f9, #8b5cf6);
+                        background: linear-gradient(to right, #a855f7, #c084fc, #8b5cf6);
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
                     }
                     .glow {
                         text-shadow: 0 0 8px rgba(168, 85, 247, 0.6), 0 0 15px rgba(168, 85, 247, 0.4);
                     }
-                    /* Markdown specific styling */
+                    
                     .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
-                        color: #a855f7; /* Purple for headings */
+                        color: #a855f7; 
                         margin-top: 1.5em;
                         margin-bottom: 0.8em;
                         font-weight: 600;
@@ -361,10 +361,10 @@ export default function BlogPage() {
                     .markdown-content p {
                         margin-bottom: 1em;
                         line-height: 1.7;
-                        color: #e0e0e0; /* Light gray for paragraphs */
+                        color: #e0e0e0; 
                     }
                     .markdown-content a {
-                        color: #8b5cf6; /* Violet for links */
+                        color: #8b5cf6; 
                         text-decoration: underline;
                     }
                     .markdown-content ul, .markdown-content ol {
@@ -376,14 +376,14 @@ export default function BlogPage() {
                         margin-bottom: 0.5em;
                     }
                     .markdown-content code {
-                        background-color: rgba(168, 85, 247, 0.2); /* Light purple background for inline code */
-                        color: #e879f9; /* Pinkish purple for inline code */
+                        background-color: rgba(168, 85, 247, 0.2); 
+                        color: #c084fc; 
                         padding: 0.2em 0.4em;
                         border-radius: 4px;
                         font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
                     }
                     .markdown-content pre {
-                        background-color: rgba(0, 0, 0, 0.6); /* Darker background for code blocks */
+                        background-color: rgba(0, 0, 0, 0.6); 
                         padding: 1em;
                         border-radius: 8px;
                         overflow-x: auto;
@@ -391,16 +391,16 @@ export default function BlogPage() {
                         border: 1px solid rgba(168, 85, 247, 0.3);
                     }
                     .markdown-content pre code {
-                        background-color: transparent; /* No background for code inside pre */
-                        color: #c792ea; /* Lighter purple for code block text */
+                        background-color: transparent; 
+                        color: #c792ea; 
                         padding: 0;
                         font-size: 0.9em;
                     }
                     .markdown-content blockquote {
-                        border-left: 4px solid #8b5cf6; /* Violet border for blockquotes */
+                        border-left: 4px solid #8b5cf6; 
                         padding-left: 1em;
                         margin: 1em 0;
-                        color: #a0a0a0; /* Gray for blockquote text */
+                        color: #a0a0a0; 
                         font-style: italic;
                     }
                     .markdown-content table {
@@ -425,7 +425,7 @@ export default function BlogPage() {
                 <div className="fixed inset-0 grid-pattern opacity-20"></div>
                 <div className="fixed inset-0 noise-texture opacity-50"></div>
 
-                {/* Header for single post view */}
+                { }
                 <header className="relative z-10 bg-gradient-to-r from-black/20 via-purple-900/20 to-black/20 backdrop-blur-xl border-b border-purple-500/20">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                         <div className="flex items-center justify-between">
@@ -443,7 +443,7 @@ export default function BlogPage() {
                     </div>
                 </header>
 
-                {/* Main Content for Single Post */}
+                { }
                 <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <article className="p-8 rounded-xl border border-purple-500/30 backdrop-blur bg-gradient-to-br from-black/60 via-purple-900/30 to-violet-800/20 shadow-lg">
                         <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4 glow">
@@ -464,7 +464,7 @@ export default function BlogPage() {
                                 </Badge>
                             )}
                         </div>
-                        
+
                         <div className="flex flex-wrap gap-2 mb-8">
                             {currentPost.tags.map(tag => (
                                 <Badge key={tag} className="bg-purple-800/30 border border-purple-600/20 text-purple-200">
@@ -484,10 +484,10 @@ export default function BlogPage() {
         );
     }
 
-    // If no postId or post not found, render the list view (original content)
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-purple-900 relative overflow-hidden font-inter">
-            {/* Custom CSS for gradients and animations */}
+        <div className="min-h-screen bg-gradient-to-br from-black via-black to-purple-900 relative overflow-hidden font-inter">
+            { }
             <style jsx global>{`
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
                 .font-inter {
@@ -519,7 +519,7 @@ export default function BlogPage() {
                     100% { background-position: 0% 50%; }
                 }
                 .text-gradient {
-                    background: linear-gradient(to right, #a855f7, #e879f9, #8b5cf6);
+                    background: linear-gradient(to right, #a855f7, #c084fc, #8b5cf6);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
@@ -538,9 +538,9 @@ export default function BlogPage() {
                     50% { transform: translateY(-10px); }
                     100% { transform: translateY(0px); }
                 }
-                /* Markdown specific styling (for single post view) */
+                
                 .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
-                    color: #a855f7; /* Purple for headings */
+                    color: #a855f7; 
                     margin-top: 1.5em;
                     margin-bottom: 0.8em;
                     font-weight: 600;
@@ -551,10 +551,10 @@ export default function BlogPage() {
                 .markdown-content p {
                     margin-bottom: 1em;
                     line-height: 1.7;
-                    color: #e0e0e0; /* Light gray for paragraphs */
+                    color: #e0e0e0; 
                 }
                 .markdown-content a {
-                    color: #8b5cf6; /* Violet for links */
+                    color: #8b5cf6; 
                     text-decoration: underline;
                 }
                 .markdown-content ul, .markdown-content ol {
@@ -566,14 +566,14 @@ export default function BlogPage() {
                     margin-bottom: 0.5em;
                 }
                 .markdown-content code {
-                    background-color: rgba(168, 85, 247, 0.2); /* Light purple background for inline code */
-                    color: #e879f9; /* Pinkish purple for inline code */
+                    background-color: rgba(168, 85, 247, 0.2); 
+                    color: #c084fc; 
                     padding: 0.2em 0.4em;
                     border-radius: 4px;
                     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
                 }
                 .markdown-content pre {
-                    background-color: rgba(0, 0, 0, 0.6); /* Darker background for code blocks */
+                    background-color: rgba(0, 0, 0, 0.6); 
                     padding: 1em;
                     border-radius: 8px;
                     overflow-x: auto;
@@ -581,16 +581,16 @@ export default function BlogPage() {
                     border: 1px solid rgba(168, 85, 247, 0.3);
                 }
                 .markdown-content pre code {
-                    background-color: transparent; /* No background for code inside pre */
-                    color: #c792ea; /* Lighter purple for code block text */
+                    background-color: transparent; 
+                    color: #c792ea; 
                     padding: 0;
                     font-size: 0.9em;
                 }
                 .markdown-content blockquote {
-                    border-left: 4px solid #8b5cf6; /* Violet border for blockquotes */
+                    border-left: 4px solid #8b5cf6; 
                     padding-left: 1em;
                     margin: 1em 0;
-                    color: #a0a0a0; /* Gray for blockquote text */
+                    color: #a0a0a0; 
                     font-style: italic;
                 }
                 .markdown-content table {
@@ -610,39 +610,42 @@ export default function BlogPage() {
                 }
             `}</style>
 
-            {/* Background Effects */}
-            <div className="fixed inset-0 bg-mesh-gradient-dark animate-gradient opacity-60"></div>
-            <div className="fixed inset-0 bg-mesh-gradient animate-gradient opacity-40"></div>
-            <div className="fixed inset-0 grid-pattern opacity-20"></div>
-            <div className="fixed inset-0 noise-texture opacity-50"></div>
+            { }
+            <div className="absolute inset-0 pointer-events-none opacity-60 z-0" style={{ backgroundImage: `url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23a855f7' fill-opacity='0.32'/%3E%3C/svg%3E")`, backgroundSize: '20px 20px', backgroundRepeat: 'repeat' }} />
+            <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'radial-gradient(60% 40% at 80% 50%, rgba(124,58,237,0.25), transparent 70%), radial-gradient(40% 30% at 15% 25%, rgba(168,85,247,0.18), transparent 60%)', WebkitMaskImage: 'radial-gradient(80% 65% at 50% 35%, black, transparent)', maskImage: 'radial-gradient(80% 65% at 50% 35%, black, transparent)' }} />
+            <div className="fixed inset-0 pointer-events-none">
+                <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow" />
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+                <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" />
+            </div>
 
-            {/* Header */}
+            { }
             <header className="relative z-10 bg-gradient-to-r from-black/20 via-purple-900/20 to-black/20 backdrop-blur-xl border-b border-purple-500/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-6">
-                            {/* Link back to portfolio (unchanged) */}
-                            <Link href="/public" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
+                            { }
+                            <Link href="/" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
                                 <ArrowLeft className="w-5 h-5" />
                                 <span>Back to Portfolio</span>
                             </Link>
                             <div className="flex items-center gap-3">
                                 <BookOpen className="w-8 h-8 text-purple-400 glow" />
-                                <h1 className="text-3xl font-bold text-gradient">My Blog</h1>
+                                <h1 className="text-3xl font-bold text-gradient">Blog</h1>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
                             {isAuthenticated ? (
                                 <>
-                                    <Button 
+                                    <Button
                                         onClick={() => setShowCreateModal(true)}
                                         className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white"
                                     >
                                         <Plus className="w-4 h-4 mr-2" />
                                         New Post
                                     </Button>
-                                    <Button 
-                                        variant="outline" 
+                                    <Button
+                                        variant="outline"
                                         onClick={handleLogout}
                                         className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
                                     >
@@ -650,7 +653,7 @@ export default function BlogPage() {
                                     </Button>
                                 </>
                             ) : (
-                                <Button 
+                                <Button
                                     onClick={() => setShowAuthModal(true)}
                                     className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white"
                                 >
@@ -663,25 +666,25 @@ export default function BlogPage() {
                 </div>
             </header>
 
-            {/* Main Content - List View */}
+            { }
             <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* Hero Section */}
+                { }
                 <div className="text-center mb-16">
                     <div className="flex justify-center items-center gap-4 mb-6">
                         <BookOpen className="w-16 h-16 text-purple-400 animate-float glow" />
                     </div>
-                    <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient glow">Developer Insights</h2>
+                    <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-alt">Development Insights</h2>
                     <p className="text-xl text-purple-200/80 max-w-3xl mx-auto leading-relaxed">
-                        Welcome to my blog where I share my <span className="text-purple-400 font-semibold">coding journey</span>, 
-                        <span className="text-violet-400 font-semibold"> technical insights</span>, and 
-                        <span className="text-purple-300 font-semibold"> lessons learned</span> as a young developer.
+                        Welcome to my blog. I share my <span className="text-purple-400 font-semibold">technical journey</span>,
+                        <span className="text-violet-400 font-semibold"> project updates</span>, and
+                        <span className="text-purple-300 font-semibold"> lessons learned</span> as a developer.
                     </p>
                     <div className="w-32 h-1 bg-gradient-to-r from-purple-500 via-black to-violet-500 mx-auto mt-8 animate-gradient"></div>
                 </div>
 
-                {/* Search and Filters */}
+                { }
                 <div className="mb-12 space-y-6">
-                    {/* Search Bar */}
+                    { }
                     <div className="relative max-w-2xl mx-auto">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400 w-5 h-5" />
                         <input
@@ -693,36 +696,34 @@ export default function BlogPage() {
                         />
                     </div>
 
-                    {/* Category Filter */}
+                    { }
                     <div className="flex flex-wrap justify-center gap-3">
                         {categories.map((cat) => (
                             <Button
                                 key={cat}
                                 variant={selectedCategory === cat ? "default" : "outline"}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`${
-                                    selectedCategory === cat
-                                        ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
-                                        : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
-                                } transition-all duration-300`}
+                                className={`${selectedCategory === cat
+                                    ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
+                                    : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
+                                    } transition-all duration-300`}
                             >
                                 {cat}
                             </Button>
                         ))}
                     </div>
 
-                    {/* Tag Filter */}
+                    { }
                     {allTags.length > 0 && (
                         <div className="flex flex-wrap justify-center gap-2">
                             <Button
                                 variant={selectedTag === 'All' ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setSelectedTag('All')}
-                                className={`${
-                                    selectedTag === 'All'
-                                        ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
-                                        : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
-                                } transition-all duration-300`}
+                                className={`${selectedTag === 'All'
+                                    ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
+                                    : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
+                                    } transition-all duration-300`}
                             >
                                 All Tags
                             </Button>
@@ -732,11 +733,10 @@ export default function BlogPage() {
                                     variant={selectedTag === tag ? "default" : "outline"}
                                     size="sm"
                                     onClick={() => setSelectedTag(tag)}
-                                    className={`${
-                                        selectedTag === tag
-                                            ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
-                                            : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
-                                    } transition-all duration-300`}
+                                    className={`${selectedTag === tag
+                                        ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
+                                        : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
+                                        } transition-all duration-300`}
                                 >
                                     {tag}
                                 </Button>
@@ -745,7 +745,7 @@ export default function BlogPage() {
                     )}
                 </div>
 
-                {/* Blog Posts List */}
+                { }
                 {filteredPosts.length === 0 ? (
                     <div className="text-center py-20">
                         <BookOpen className="w-24 h-24 text-purple-400/50 mx-auto mb-8 animate-float" />
@@ -753,16 +753,16 @@ export default function BlogPage() {
                             {posts.length === 0 ? 'No Posts Yet' : 'No Posts Found'}
                         </h2>
                         <p className="text-xl text-purple-200/80 mb-8">
-                            {posts.length === 0 
-                                ? (isAuthenticated 
-                                    ? "Ready to share your first story? Click 'New Post' to get started!" 
+                            {posts.length === 0
+                                ? (isAuthenticated
+                                    ? "Ready to share your first story? Click 'New Post' to get started!"
                                     : "Check back soon for amazing content about coding, development, and tech insights!"
-                                  )
+                                )
                                 : "Try adjusting your search terms or filters to find what you're looking for."
                             }
                         </p>
                         {isAuthenticated && posts.length === 0 && (
-                            <Button 
+                            <Button
                                 onClick={() => setShowCreateModal(true)}
                                 size="lg"
                                 className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white px-8 py-4"
@@ -775,7 +775,7 @@ export default function BlogPage() {
                 ) : (
                     <div className="space-y-10">
                         {filteredPosts.map(post => (
-                            // Link to the same /blog page, but with an 'id' query parameter
+
                             <Link key={post.id} href={`/blog?id=${post.id}`} className="block group">
                                 <div className="p-6 rounded-xl border border-purple-500/30 backdrop-blur bg-gradient-to-br from-black/60 via-purple-900/30 to-violet-800/20 hover-lift transition-transform">
                                     <h2 className="text-2xl font-semibold text-gradient mb-2 group-hover:underline">
@@ -803,16 +803,16 @@ export default function BlogPage() {
                                     </p>
                                     {isAuthenticated && (
                                         <div className="flex gap-2 mt-4 pt-4 border-t border-purple-500/20">
-                                            <Button 
-                                                onClick={(e: { preventDefault: () => void; }) => { e.preventDefault(); openEditModal(post); }} // Prevent link navigation
+                                            <Button
+                                                onClick={(e: { preventDefault: () => void; }) => { e.preventDefault(); openEditModal(post); }}
                                                 size="sm"
                                                 className="bg-purple-700/50 hover:bg-purple-700 text-purple-200"
                                             >
                                                 <Edit className="w-4 h-4 mr-2" />
                                                 Edit
                                             </Button>
-                                            <Button 
-                                                onClick={(e: { preventDefault: () => void; }) => { e.preventDefault(); confirmDeletePost(post.id); }} // Prevent link navigation
+                                            <Button
+                                                onClick={(e: { preventDefault: () => void; }) => { e.preventDefault(); confirmDeletePost(post.id); }}
                                                 size="sm"
                                                 className="bg-red-700/50 hover:bg-red-700 text-red-200"
                                             >
@@ -828,7 +828,7 @@ export default function BlogPage() {
                 )}
             </main>
 
-            {/* Auth Modal */}
+            { }
             {showAuthModal && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <Card className="w-full max-w-md bg-gradient-to-br from-black/80 via-purple-900/60 to-violet-800/40 backdrop-blur-xl border border-purple-500/30">
@@ -863,14 +863,14 @@ export default function BlogPage() {
                                 <p className="text-red-400 text-sm">{authError}</p>
                             )}
                             <div className="flex gap-3 pt-4">
-                                <Button 
+                                <Button
                                     onClick={handleAuth}
                                     className="flex-1 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white"
                                 >
                                     Login
                                 </Button>
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     onClick={() => {
                                         setShowAuthModal(false);
                                         setAuthError('');
@@ -887,7 +887,7 @@ export default function BlogPage() {
                 </div>
             )}
 
-            {/* Create/Edit Post Modal */}
+            { }
             {(showCreateModal || editingPost) && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-black/80 via-purple-900/60 to-violet-800/40 backdrop-blur-xl border border-purple-500/30">
@@ -946,7 +946,7 @@ export default function BlogPage() {
                                 />
                             </div>
                             <div className="flex gap-3 pt-4">
-                                <Button 
+                                <Button
                                     onClick={editingPost ? handleEditPost : handleCreatePost}
                                     className="flex-1 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white"
                                     disabled={!title.trim() || !content.trim()}
@@ -954,8 +954,8 @@ export default function BlogPage() {
                                     <Save className="w-4 h-4 mr-2" />
                                     {editingPost ? 'Update Post' : 'Create Post'}
                                 </Button>
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     onClick={closeModals}
                                     className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
                                 >
@@ -967,7 +967,7 @@ export default function BlogPage() {
                 </div>
             )}
 
-            {/* Delete Confirmation Modal */}
+            { }
             {showDeleteConfirmModal && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <Card className="w-full max-w-sm bg-gradient-to-br from-black/80 via-purple-900/60 to-violet-800/40 backdrop-blur-xl border border-purple-500/30">
@@ -979,15 +979,15 @@ export default function BlogPage() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="flex gap-3 pt-4">
-                                <Button 
+                                <Button
                                     onClick={handleDeleteConfirmed}
                                     className="flex-1 bg-red-600 hover:bg-red-700 text-white"
                                 >
                                     <Trash2 className="w-4 h-4 mr-2" />
                                     Delete
                                 </Button>
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     onClick={closeModals}
                                     className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
                                 >

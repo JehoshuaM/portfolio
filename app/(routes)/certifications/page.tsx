@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  ArrowLeft, 
-  Award, 
-  Calendar, 
-  ExternalLink, 
+import {
+  ArrowLeft,
+  Award,
+  Calendar,
+  ExternalLink,
   Star,
   CheckCircle,
   Trophy,
@@ -45,7 +45,7 @@ export default function CertificationsPage() {
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     const certificationData: Certification[] = [
       {
         id: '4',
@@ -119,7 +119,7 @@ export default function CertificationsPage() {
         category: 'AI & Machine Learning',
         featured: true
       },
-      // Non-featured certificates (still valuable but not in top 6)
+
       {
         id: '12',
         title: 'Cloud Services',
@@ -222,20 +222,20 @@ export default function CertificationsPage() {
   }, []);
 
   const categories = ['All', 'Programming', 'Web Development', 'Cloud', 'AI & Machine Learning', 'Other'];
-  
-  const filteredCertifications = selectedCategory === 'All' 
-    ? certifications 
+
+  const filteredCertifications = selectedCategory === 'All'
+    ? certifications
     : certifications.filter(cert => cert.category === selectedCategory);
 
   const featuredCertifications = certifications.filter(cert => cert.featured);
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'Beginner': return 'from-green-600 to-emerald-600';
-      case 'Intermediate': return 'from-blue-600 to-cyan-600';
-      case 'Advanced': return 'from-purple-600 to-violet-600';
-      case 'Expert': return 'from-red-600 to-pink-600';
-      default: return 'from-gray-600 to-slate-600';
+      case 'Beginner': return 'from-purple-800 to-violet-900';
+      case 'Intermediate': return 'from-purple-600 to-violet-700';
+      case 'Advanced': return 'from-purple-500 to-violet-600';
+      case 'Expert': return 'from-purple-400 to-violet-500';
+      default: return 'from-purple-900 to-black';
     }
   };
 
@@ -265,48 +265,50 @@ export default function CertificationsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-purple-900 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-mesh-gradient-dark animate-gradient opacity-60"></div>
-      <div className="fixed inset-0 bg-mesh-gradient animate-gradient opacity-40"></div>
-      <div className="fixed inset-0 grid-pattern opacity-20"></div>
-      <div className="fixed inset-0 noise-texture opacity-50"></div>
+    <div className="min-h-screen bg-gradient-dark relative overflow-hidden">
+      { }
+      <div className="absolute inset-0 pointer-events-none opacity-60 z-0" style={{ backgroundImage: `url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23a855f7' fill-opacity='0.32'/%3E%3C/svg%3E")`, backgroundSize: '20px 20px', backgroundRepeat: 'repeat' }} />
+      <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'radial-gradient(60% 40% at 80% 50%, rgba(124,58,237,0.25), transparent 70%), radial-gradient(40% 30% at 15% 25%, rgba(168,85,247,0.18), transparent 60%)', WebkitMaskImage: 'radial-gradient(80% 65% at 50% 35%, black, transparent)', maskImage: 'radial-gradient(80% 65% at 50% 35%, black, transparent)' }} />
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" />
+      </div>
 
-      {/* Header */}
+      { }
       <header className="relative z-10 bg-gradient-to-r from-black/20 via-purple-900/20 to-black/20 backdrop-blur-xl border-b border-purple-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <Link href="/public" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
+              <Link href="/" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back to Portfolio</span>
               </Link>
               <div className="flex items-center gap-3">
                 <Trophy className="w-8 h-8 text-purple-400 glow" />
-                <h1 className="text-3xl font-bold text-gradient">My Certifications</h1>
+                <h1 className="text-3xl font-bold text-gradient">Certifications</h1>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
+      { }
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
+        { }
         <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
           <div className="flex justify-center items-center gap-4 mb-6">
             <Medal className="w-16 h-16 text-purple-400 animate-float glow" />
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient glow">Professional Certifications</h2>
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient glow">Certifications</h2>
           <p className="text-xl text-purple-200/80 max-w-3xl mx-auto leading-relaxed">
-            Showcasing my commitment to <span className="text-purple-400 font-semibold">continuous learning</span> and 
-            <span className="text-violet-400 font-semibold"> professional development</span> through verified certifications 
-            and achievements in various technology domains.
+            Verified certifications earned through <span className="text-purple-400 font-semibold">dedicated study</span> and
+            <span className="text-violet-400 font-semibold"> professional development</span> across the tech world.
           </p>
           <div className="w-32 h-1 bg-gradient-to-r from-purple-500 via-black to-violet-500 mx-auto mt-8 animate-gradient"></div>
         </div>
 
-        {/* Stats Section */}
+        { }
         <div className="grid md:grid-cols-4 gap-6 mb-16">
           <Card className="bg-gradient-to-br from-black/60 via-purple-900/40 to-violet-800/30 backdrop-blur-xl border border-purple-500/30 hover-lift">
             <CardContent className="p-6 text-center">
@@ -318,7 +320,7 @@ export default function CertificationsPage() {
           <Card className="bg-gradient-to-br from-black/60 via-purple-900/40 to-violet-800/30 backdrop-blur-xl border border-purple-500/30 hover-lift">
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-gradient mb-2">{featuredCertifications.length}</div>
-              <div className="text-purple-200 text-sm">Featured Achievements</div>
+              <div className="text-purple-200 text-sm">Featured achievements</div>
               <Star className="w-6 h-6 text-purple-400 mx-auto mt-2" />
             </CardContent>
           </Card>
@@ -338,25 +340,24 @@ export default function CertificationsPage() {
           </Card>
         </div>
 
-        {/* Category Filter */}
+        { }
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
-              className={`${
-                selectedCategory === category
-                  ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
-                  : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
-              } transition-all duration-300`}
+              className={`${selectedCategory === category
+                ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white'
+                : 'border-purple-500/50 text-purple-300 hover:bg-purple-500/10'
+                } transition-all duration-300`}
             >
               {category}
             </Button>
           ))}
         </div>
 
-        {/* Featured Certifications */}
+        { }
         {selectedCategory === 'All' && (
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-gradient mb-8 text-center">Featured Achievements</h3>
@@ -389,18 +390,18 @@ export default function CertificationsPage() {
                         </div>
                         {cert.pdfPath && (
                           <div className="flex gap-2">
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               className="shrink-0 hover:bg-gradient-to-r hover:from-black/20 hover:to-purple-500/20"
                               onClick={() => handleViewPDF(cert.pdfPath!)}
                               title="View Certificate"
                             >
                               <FileText className="h-4 w-4 text-purple-400" />
                             </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               className="shrink-0 hover:bg-gradient-to-r hover:from-black/20 hover:to-purple-500/20"
                               onClick={() => handleDownloadPDF(cert.pdfPath!, cert.title)}
                               title="Download Certificate"
@@ -421,7 +422,7 @@ export default function CertificationsPage() {
           </div>
         )}
 
-        {/* All Certifications */}
+        { }
         <div>
           <h3 className="text-3xl font-bold text-gradient mb-8 text-center">
             {selectedCategory === 'All' ? 'All Certifications' : `${selectedCategory} Certifications`}
@@ -474,18 +475,18 @@ export default function CertificationsPage() {
                       </div>
                       {cert.pdfPath && (
                         <div className="flex flex-col gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             className="shrink-0 hover:bg-gradient-to-r hover:from-black/20 hover:to-purple-500/20 hover:scale-110 transition-all"
                             onClick={() => handleViewPDF(cert.pdfPath!)}
                             title="View Certificate"
                           >
                             <FileText className="h-5 w-5 text-purple-400" />
                           </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             className="shrink-0 hover:bg-gradient-to-r hover:from-black/20 hover:to-purple-500/20 hover:scale-110 transition-all"
                             onClick={() => handleDownloadPDF(cert.pdfPath!, cert.title)}
                             title="Download Certificate"
@@ -517,7 +518,7 @@ export default function CertificationsPage() {
         {filteredCertifications.length === 0 && (
           <div className="text-center py-20">
             <Award className="w-24 h-24 text-purple-400/50 mx-auto mb-8 animate-float" />
-            <h3 className="text-3xl font-bold text-gradient mb-4">No Certifications Found</h3>
+            <h3 className="text-3xl font-bold text-gradient mb-4">No certifications yet</h3>
             <p className="text-xl text-purple-200/80">
               No certifications found in the "{selectedCategory}" category.
             </p>

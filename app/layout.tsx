@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import localFont from 'next/font/local';
 
-const poppins = Poppins({ 
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
@@ -16,43 +16,49 @@ const horizon = localFont({
   display: 'swap',
 });
 
+const minecraftFont = localFont({
+  src: '../public/assets/minecraft-font/minecraft-five-bold.ttf',
+  variable: '--font-minecraft',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'Jehoshua | Portfolio',
-  description: 'Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, Next.js, and Minecraft plugin development. Explore innovative projects and creative solutions.',
-  keywords: 'Jehoshua, Young Developer, Java Developer, JavaScript Developer, Next.js, Minecraft Plugins, Teen Developer, Portfolio, Web Development, Programming, Software Development, Full Stack Developer',
-  authors: [{ name: 'Jehoshua' }],
-  creator: 'Jehoshua',
-  publisher: 'Jehoshua',
+  title: 'FabledRuns | Portfolio',
+  description: 'Portfolio of FabledRuns, a 15-year-old developer specializing in Java, Next.js, and Minecraft plugin development.',
+  keywords: 'FabledRuns, Young Developer, Java Developer, JavaScript Developer, Next.js, Minecraft Plugins, Teen Developer, Portfolio, Web Development, Programming, Software Development, Full Stack Developer',
+  authors: [{ name: 'FabledRuns' }],
+  creator: 'FabledRuns',
+  publisher: 'FabledRuns',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://jehoshua.netlify.app'),
+  metadataBase: new URL('https://fabledruns.netlify.app'),
   alternates: {
-    canonical: 'https://jehoshua.netlify.app',
+    canonical: 'https://fabledruns.netlify.app',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://jehoshua.netlify.app',
-    title: 'Jehoshua | Portfolio',
-    description: 'Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development. Explore innovative projects and creative solutions.',
-    siteName: 'Jehoshua Portfolio',
+    url: 'https://fabledruns.netlify.app',
+    title: 'FabledRuns | Portfolio',
+    description: 'Portfolio of FabledRuns, a 15-year-old developer specializing in Java, Next.js, and Minecraft plugin development.',
+    siteName: 'FabledRuns Portfolio',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Jehoshua - Young Developer Portfolio',
+        alt: 'FabledRuns - Young Developer Portfolio',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jehoshua | Portfolio',
-    description: 'Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development.',
-    creator: '@jehoshua',
+    title: 'FabledRuns | Portfolio',
+    description: 'Portfolio of FabledRuns, a 15-year-old developer specializing in Java, Next.js, and Minecraft plugin development.',
+    creator: '@fabledruns',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -79,38 +85,37 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${horizon.variable} scroll-smooth`}>
+    <html lang="en" className={`${poppins.variable} ${horizon.variable} ${minecraftFont.variable} scroll-smooth`}>
       <head>
-        <link rel="canonical" href="https://jehoshua.netlify.app" />
+        <link rel="canonical" href="https://fabledruns.netlify.app" />
         <meta name="geo.region" content="IND" />
         <meta name="geo.placename" content="India" />
         <meta name="ICBM" content="39.8283, -98.5795" />
-        <meta name="DC.title" content="Jehoshua - Portfolio" />
-        <meta name="DC.creator" content="Jehoshua" />
+        <meta name="DC.title" content="FabledRuns - Portfolio" />
+        <meta name="DC.creator" content="FabledRuns" />
         <meta name="DC.subject" content="Web Development, Programming, Java, JavaScript, Minecraft Plugins" />
-        <meta name="DC.description" content="Portfolio of Jehoshua, a passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development." />
-        <meta name="DC.publisher" content="Jehoshua" />
-        <meta name="DC.contributor" content="Jehoshua" />
+        <meta name="DC.description" content="Portfolio of FabledRuns, a 15-year-old developer specializing in Java, Next.js, and Minecraft plugin development." />
+        <meta name="DC.publisher" content="FabledRuns" />
+        <meta name="DC.contributor" content="FabledRuns" />
         <meta name="DC.date" content="2025-01-27" />
         <meta name="DC.type" content="Text" />
         <meta name="DC.format" content="text/html" />
-        <meta name="DC.identifier" content="https://jehoshua.netlify.app" />
+        <meta name="DC.identifier" content="https://fabledruns.netlify.app" />
         <meta name="DC.language" content="en" />
         <meta name="DC.coverage" content="World" />
-        <meta name="DC.rights" content="Copyright 2025 Jehoshua" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+        <meta name="DC.rights" content="Copyright 2025 FabledRuns" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Jehoshua",
-              "url": "https://jehoshua.netlify.app",
-              "image": "https://jehoshua.netlify.app/pfp.jpg",
+              "name": "FabledRuns",
+              "url": "https://fabledruns.netlify.app",
+              "image": "https://fabledruns.netlify.app/pfp.jpg",
               "sameAs": [
-                "https://github.com/JehoshuaM",
-                "https://www.linkedin.com/in/jehoshua-m/",
+                "https://github.com/FabledRuns",
                 "https://discord.com/users/herobrinetg"
               ],
               "jobTitle": "Software Developer",
@@ -126,7 +131,7 @@ export default function RootLayout({
                 "Web Development",
                 "Software Engineering"
               ],
-              "description": "A passionate 15-year-old developer specializing in Java, JavaScript, and Minecraft plugin development.",
+              "description": "Portfolio of FabledRuns, a 15-year-old developer specializing in Java, Next.js, and Minecraft plugin development.",
               "birthDate": "2010",
               "nationality": "Indian",
               "email": "jehoshua.dev@gmail.com",
