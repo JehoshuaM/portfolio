@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fabledruns.netlify.app/sitemap.xml
+Sitemap: https://jehoshua.me/sitemap.xml

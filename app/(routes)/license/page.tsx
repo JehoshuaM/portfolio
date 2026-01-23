@@ -64,11 +64,11 @@ export default function License() {
                             <div className="flex items-center gap-3">
 
                                 <div className="text-1xl font-bold text-gradient">
-                                    <h4>FabledRuns</h4>
+                                    <h4>Jehoshua</h4>
                                 </div>
                             </div>
                             <div className="hidden md:flex items-center space-x-8">
-                                <Link href="/public" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
+                                <Link href="/" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
                                     <ArrowLeft className="w-5 h-5" />
                                     <span>Back to Portfolio</span>
                                 </Link>
@@ -86,7 +86,7 @@ export default function License() {
                             <Card className="bg-card-gradient border border-purple-900/30 shadow-card hover:shadow-card-hover transition-all duration-300">
                                 <CardContent className="p-8">
                                     <p className="text-lg text-gray-300 leading-relaxed mb-6 font-bold">MIT License</p>
-                                    <p className="text-lg text-gray-300 leading-relaxed mb-6">Copyright (c) 2025 FabledRuns </p>
+                                    <p className="text-lg text-gray-300 leading-relaxed mb-6">Copyright (c) 2025 Jehoshua </p>
                                     <p className="text-lg text-gray-300 leading-relaxed mb-6">
                                         Permission is hereby granted, free of charge, to any person obtaining a copy
                                         of this software and associated documentation files (the "Software"), to deal

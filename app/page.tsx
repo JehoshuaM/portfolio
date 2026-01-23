@@ -145,14 +145,10 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen bg-gradient-dark relative overflow-hidden selection:bg-purple-500/30">
       <div className="noise" />
-
-
       <div
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-500 z-[100] transition-all duration-150"
         style={{ width: `${scrollProgress}%` }}
       />
-
-
 
       <div
         className="absolute inset-0 pointer-events-none z-0"
@@ -175,20 +171,17 @@ export default function Portfolio() {
         </div>
 
         <div className="absolute top-0 left-0 w-full h-[850px] pointer-events-none z-0 overflow-hidden select-none">
-          <div className="w-full h-[850px] -translate-y-[10%] opacity-40">
+          <div className="w-full h-[850px] -translate-y-[10%] opacity-60">
             <Wireframe3D />
           </div>
         </div>
 
-        <nav className="fixed top-0 w-full z-50 glass border-b border-purple-500/10">
+        <nav className="fixed top-0 w-full z-50 glass bg-black/20 border-b border-purple-500/10">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="flex justify-between items-center h-20">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-600/20 rounded-lg">
-                  <Terminal className="w-5 h-5 text-purple-400" />
-                </div>
                 <div className="text-1xl font-bold tracking-tighter text-gradient-alt">
-                  <h4>FabledRuns</h4>
+                  <h4>Jehoshua</h4>
                 </div>
               </div>
               <div className="hidden md:flex items-center space-x-8">
@@ -212,23 +205,23 @@ export default function Portfolio() {
         </nav>
 
         <section id="home" className="min-h-screen flex items-center pt-20 relative overflow-hidden bg-gradient-to-b from-transparent to-purple-900/20">
-          <div className="max-w-8xl mx-auto px-6 ml-20 lg:px-8 w-full relative z-10">
+          <div className="max-w-8xl mx-auto px-6 lg:ml-20 md:ml-14 sm:ml-10 lg:px-8 w-full relative z-10">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-600/10 border border-purple-500/20 rounded-full mb-8">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                  <span className="text-purple-300 text-xs font-bold uppercase">Available for work</span>
+              <div>
+                <div className={`inline-flex items-center gap-2 px-3 py-1 bg-purple-600/10 border border-purple-500/20 rounded-full mb-8 ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>
+                  <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
+                  <span className="text-purple-300 text-xs font-bold uppercase">Nerd Alert</span>
                 </div>
 
-                <h1 className="text-3xl font-bold mb-6">
-                  <span className="text-gradient-alt tracking-tight font-[family-name:var(--font-minecraft)]">FabledRuns</span>
+                <h1 className={`md:text-7xl text-4xl font-bold mb-6 ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>
+                  <span className="text-gradient-alt text-gradient-anim tracking-tight">Jehoshua</span>
                 </h1>
 
-                <p className="text-xl text-gray-400 mb-10 leading-relaxed max-w-xl">
+                <p className={`text-xl text-gray-400 mb-10 leading-relaxed max-w-xl ${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
                   A 15-year-old <span className="text-white border-b border-purple-500/50">developer</span> making good projects and cool websites through <span className="text-purple-400 font-bold">code</span>.
                 </p>
 
-                <div className="flex flex-wrap gap-4 mb-10">
+                <div className={`flex flex-wrap gap-4 mb-10 ${isVisible ? 'animate-slide-left delay-300' : 'opacity-0'}`}>
                   <Button
                     size="default"
                     onClick={() => scrollToSection('projects')}
@@ -242,7 +235,7 @@ export default function Portfolio() {
                     variant="outline"
                     size="default"
                     onClick={() => scrollToSection('contact')}
-                    className="border-purple-600/50 text-purple-300 hover:bg-purple-600/10 hover:border-purple-500 shadow-card hover:shadow-purple transition-all duration-300"
+                    className="text-purple-300 hover:bg-purple-600/10 shadow-card hover:shadow-purple transition-all duration-300"
                   >
                     <Send className="mr-2 h-5 w-5" />
                     Let's Connect
@@ -265,11 +258,11 @@ export default function Portfolio() {
           <div className="absolute inset-0 bg-purple-gradient opacity-30" />
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient">About Me</h2>
-              <p className="text-gray-400 text-lg">A developer passionate about building things that work</p>
+              <h2 className={`text-5xl md:text-6xl font-bold mb-4 text-gradient ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>About Me</h2>
+              <p className={`text-gray-400 text-lg ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>A developer passionate about building things that work</p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className={`grid lg:grid-cols-2 gap-12 items-center ${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
               <div className="space-y-6">
                 <Card className="bg-card-gradient border border-purple-900/30 shadow-card hover:shadow-card-hover transition-all duration-300">
                   <CardContent className="p-8">
@@ -325,14 +318,14 @@ export default function Portfolio() {
         <section id="experience" className="py-32 relative">
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient">Experience</h2>
-              <p className="text-gray-400 text-lg">Where I've contributed</p>
+              <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-gradient ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>Experience</h2>
+              <p className={`text-gray-400 text-lg ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>Where I've contributed</p>
             </div>
 
             <div className="max-w-4xl mx-auto relative">
               <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/50 via-purple-500/20 to-transparent transform -translate-x-1/2 hidden md:block" />
 
-              <div className="space-y-12">
+              <div className={`space-y-12 ${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
                 {experiences.map((exp, index) => (
                   <div key={exp.company} className={`relative flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                     <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-purple-600 rounded-full border-4 border-black transform -translate-x-1/2 mt-8 z-10 hidden md:block" />
@@ -374,11 +367,11 @@ export default function Portfolio() {
         <section id="skills" className="py-32 relative">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-alt">Technical Skills</h2>
-              <p className="text-gray-400 text-sm tracking-[0.2em] font-bold uppercase">Technologies I use</p>
+              <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-gradient-alt ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>Technical Skills</h2>
+              <p className={`text-gray-400 text-sm tracking-[0.2em] font-bold uppercase ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>Technologies I use</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 ${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
               {skills.map((skill, index) => (
                 <Card
                   key={skill.name}
@@ -408,11 +401,11 @@ export default function Portfolio() {
           <div className="absolute inset-0 bg-purple-gradient opacity-30" />
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-alt">Projects</h2>
-              <p className="text-gray-400 text-sm tracking-[0.2em] font-bold uppercase">Selected works and experiments</p>
+              <h2 className={`text-5xl md:text-6xl font-bold mb-4 text-gradient-alt ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>Projects</h2>
+              <p className={`text-gray-400 text-sm tracking-[0.2em] font-bold uppercase ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>Selected works and experiments</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className={`grid md:grid-cols-2 gap-8 ${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
               {projects.map((project, index) => (
                 <Card
                   key={project.title}
@@ -437,7 +430,7 @@ export default function Portfolio() {
                     </CardDescription>
                     {project.repo && (
                       <a href={project.repo} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline" size="sm" className="border-purple-600/50 text-purple-300 hover:bg-purple-600/10 hover:border-purple-500 transition-all duration-300">
+                        <Button variant="outline" size="sm" className="text-purple-300 hover:bg-purple-600/10 transition-all duration-300">
                           <Github className="mr-2 h-4 w-4" />
                           View Repository
                           <ExternalLink className="ml-2 h-4 w-4" />
@@ -472,28 +465,30 @@ export default function Portfolio() {
         <section id="certifications" className="py-32">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-alt">Certifications</h2>
-              <p className="text-gray-400 text-sm tracking-[0.2em] font-bold uppercase">Professional verification of my skills</p>
+              <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-gradient-alt ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>Certifications</h2>
+              <p className={`text-gray-400 text-sm tracking-[0.2em] font-bold uppercase ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>Professional verification of my skills</p>
             </div>
 
-            <Card className="bg-card-gradient border border-purple-900/30 shadow-purple-lg max-w-3xl mx-auto border-glow">
-              <CardContent className="p-12 text-center">
-                <div className="mb-8">
-                  <Trophy className="w-24 h-24 text-purple-400 mx-auto glow" />
-                </div>
-                <h3 className="text-3xl font-bold text-gradient mb-4">Certifications</h3>
-                <p className="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">
-                  Verified certifications earned through dedicated study and testing.
-                </p>
-                <Link href="/certifications">
-                  <Button size="default" className="relative bg-gradient-to-b from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-purple hover:shadow-purple-lg transition-all duration-300 group">
-                    <Award className="mr-2 h-5 w-5" />
-                    View Certifications
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            <div className={`${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
+              <Card className="bg-card-gradient border border-purple-900/30 shadow-purple-lg max-w-3xl mx-auto border-glow">
+                <CardContent className="p-12 text-center">
+                  <div className="mb-8">
+                    <Trophy className="w-24 h-24 text-purple-400 mx-auto glow" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-gradient mb-4">Certifications</h3>
+                  <p className="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">
+                    Verified certifications earned through dedicated study and testing.
+                  </p>
+                  <Link href="/certifications">
+                    <Button size="default" className="relative bg-gradient-to-b from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-purple hover:shadow-purple-lg transition-all duration-300 group">
+                      <Award className="mr-2 h-5 w-5" />
+                      View Certifications
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
 
@@ -502,28 +497,30 @@ export default function Portfolio() {
           <div className="absolute inset-0 bg-purple-gradient opacity-30" />
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-alt">Blog</h2>
-              <p className="text-gray-400 text-sm tracking-[0.2em] font-bold uppercase">Insights and development updates</p>
+              <h2 className={`text-5xl md:text-6xl font-bold mb-4 text-gradient-alt ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>Blog</h2>
+              <p className={`text-gray-400 text-sm tracking-[0.2em] font-bold uppercase ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>Insights and development updates</p>
             </div>
 
-            <Card className="bg-card-gradient border border-purple-900/30 shadow-purple-lg max-w-3xl mx-auto border-glow">
-              <CardContent className="p-12 text-center">
-                <div className="mb-8">
-                  <BookOpen className="w-24 h-24 text-purple-400 mx-auto glow" />
-                </div>
-                <h3 className="text-3xl font-bold text-gradient mb-4">Development Blog</h3>
-                <p className="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">
-                  I write about technical challenges, project updates, and development insights.
-                </p>
-                <Link href="/blog">
-                  <Button size="default" className="relative bg-gradient-to-b from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-purple hover:shadow-purple-lg transition-all duration-300 group">
-                    <FileCode className="mr-2 h-5 w-5" />
-                    Read Blog
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            <div className={`${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
+              <Card className="bg-card-gradient border border-purple-900/30 shadow-purple-lg max-w-3xl mx-auto border-glow">
+                <CardContent className="p-12 text-center">
+                  <div className="mb-8">
+                    <BookOpen className="w-24 h-24 text-purple-400 mx-auto glow" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-gradient mb-4">Development Blog</h3>
+                  <p className="text-lg text-gray-300 mb-10 max-w-2xl mx-auto">
+                    I write about technical challenges, project updates, and development insights.
+                  </p>
+                  <Link href="/blog">
+                    <Button size="default" className="relative bg-gradient-to-b from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-purple hover:shadow-purple-lg transition-all duration-300 group">
+                      <FileCode className="mr-2 h-5 w-5" />
+                      Read Blog
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
 
@@ -531,11 +528,11 @@ export default function Portfolio() {
         <section id="contact" className="py-32">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-alt">Contact</h2>
-              <p className="text-gray-400 text-sm tracking-[0.2em] font-bold uppercase">Let's work together</p>
+              <h2 className={`text-5xl md:text-6xl font-bold mb-4 text-gradient-alt ${isVisible ? 'animate-slide-left' : 'opacity-0'}`}>Contact</h2>
+              <p className={`text-gray-400 text-sm tracking-[0.2em] font-bold uppercase ${isVisible ? 'animate-slide-left delay-100' : 'opacity-0'}`}>Let's work together</p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
+            <div className={`max-w-4xl mx-auto ${isVisible ? 'animate-slide-left delay-200' : 'opacity-0'}`}>
               <Card className="bg-card-gradient border border-purple-900/30 shadow-purple-lg">
                 <CardContent className="p-12">
                   <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -549,12 +546,12 @@ export default function Portfolio() {
                       </Card>
                     </a>
 
-                    <a href="https://github.com/FabledRuns" target="_blank" rel="noopener noreferrer" className="group">
+                    <a href="https://github.com/fabledruns" target="_blank" rel="noopener noreferrer" className="group">
                       <Card className="bg-purple-600/10 border border-purple-900/30 shadow-card hover:shadow-purple-lg transition-all duration-300">
                         <CardContent className="p-8 text-center">
                           <Github className="h-12 w-12 text-purple-400 mx-auto mb-4" />
                           <h3 className="font-bold text-white mb-2">GitHub</h3>
-                          <p className="text-sm text-gray-400 font-medium">FabledRuns</p>
+                          <p className="text-sm text-gray-400 font-medium">fabledruns</p>
                         </CardContent>
                       </Card>
                     </a>
@@ -586,7 +583,7 @@ export default function Portfolio() {
             <div className="text-center">
               <div className="flex justify-center items-center gap-2 mb-6">
                 <Star className="w-5 h-5 text-purple-400 animate-pulse" />
-                <p className="text-gray-400">© 2025 FabledRuns. Built with passion and code ❤️.</p>
+                <p className="text-gray-400">© 2025 Jehoshua. Built with passion and code ❤️.</p>
                 <Star className="w-5 h-5 text-purple-400 animate-pulse" style={{ animationDelay: '0.5s' }} />
               </div>
 

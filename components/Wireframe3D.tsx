@@ -7,6 +7,7 @@ import * as THREE from 'three';
 
 function Shape() {
     const meshRef = useRef<THREE.Group>(null);
+    const startTime = useRef<number | null>(null);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -15,6 +16,8 @@ function Shape() {
 
     useFrame((state) => {
         if (!meshRef.current) return;
+
+        if (startTime.current === null) startTime.current = state.clock.elapsedTime;
 
         const targetX = state.pointer.x / 2;
 
@@ -32,8 +35,15 @@ function Shape() {
             0.05
         );
 
+        const duration = 2.0;
+        const elapsed = state.clock.elapsedTime - startTime.current;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+        const currentSpeed = THREE.MathUtils.lerp(0.009, 0.0004, easeOutCubic);
+
         meshRef.current.rotation.x -= 0.0001;
-        meshRef.current.rotation.y += 0.0004;
+        meshRef.current.rotation.y += currentSpeed;
     });
 
     if (!mounted) return null;

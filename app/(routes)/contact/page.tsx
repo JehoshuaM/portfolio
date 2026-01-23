@@ -82,7 +82,7 @@ export default function Contact() {
                             <div className="flex items-center gap-3">
 
                                 <div className="text-1xl font-bold text-gradient">
-                                    <h4>FabledRuns</h4>
+                                    <h4>Jehoshua</h4>
                                 </div>
                             </div>
                             <div className="hidden md:flex items-center space-x-8">
