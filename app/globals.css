@@ -223,49 +223,14 @@
     animation: spin 1s linear infinite;
   }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   .animate-outline-border {
-    position: relative !important;
-    overflow: hidden !important;
-    z-index: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    isolation: isolate !important;
-    border-radius: 8px !important;
-  }
-
-  .animate-outline-border::before {
-    content: "" !important;
-    position: absolute !important;
-    z-index: -2 !important;
-    top: -150% !important;
-    left: -150% !important;
-    width: 400% !important;
-    height: 400% !important;
-    background: conic-gradient(from 0deg,
-        transparent 0deg,
-        transparent 310deg,
-        #a855f7 340deg,
-        #be81ff 360deg) !important;
-    animation: spin 4s linear infinite !important;
-  }
-
-  .animate-outline-border::after {
-    content: "" !important;
-    position: absolute !important;
-    z-index: -1 !important;
-    inset: 1.5px !important;
-    background: #050508 !important;
-    border-radius: 7px !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    background: transparent;
+    isolation: isolate;
+    border-radius: 8px;
+    box-shadow: 4px 4px 16px 0 #05000a;
   }
 
   @keyframes shimmer {

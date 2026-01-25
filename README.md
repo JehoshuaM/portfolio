@@ -34,4 +34,4 @@ This is my personal portfolio, showcasing projects I’ve built in web developme
 ## Contact
 
 - **Portfolio:** [jehoshua.me](https://jehoshua.me)  
-- **Email:** `jehoshua.dev@gmail.com` 
+- **Email:** `inquiries@jehoshua.me` 
