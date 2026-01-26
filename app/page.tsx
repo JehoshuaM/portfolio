@@ -138,14 +138,14 @@ export default function Portfolio() {
 
   const projects = [
     {
-      title: 'Hit Desync HUD',
-      description: 'A client-side Fabric mod providing real-time feedback on hit registration. Identifies server-side desync and lag during PvP with a fully customizable HUD editor.',
+      title: 'Korenet',
+      description: 'Korenet improves Minecraft’s network feedback by giving accurate, real-time connection quality info without unfair advantages.',
       tech: ['Java', 'Fabric API'],
       icon: Code,
       featured: true,
-      repo: 'https://github.com/fabledruns/hitdesynchud',
-      modrinth: 'hit-desync-hud',
-      stats: { feedback: 'Real-time', architecture: 'Client-side', version: '1.21.x' }
+      repo: 'https://github.com/fabledruns/korenet',
+      modrinth: 'korenet',
+      stats: { feedback: 'Real-time', architecture: 'Client-side', version: '1.21.8' }
     }
   ];
 
