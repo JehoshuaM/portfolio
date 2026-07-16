@@ -1,0 +1,429 @@
+.section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 650px;
+  background: var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.editorialGrid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.contentCol {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: min(42rem, 46vw);
+  min-width: 520px;
+  height: 100%;
+  padding: var(--pad-y) var(--pad-x);
+  pointer-events: none;
+}
+
+.heading {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  font-size: clamp(2.2rem, 4.6vw, 5rem);
+  line-height: 0.9;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  margin: 0;
+  margin-bottom: 2rem;
+}
+
+.headingRow {
+  display: block;
+  overflow: visible;
+}
+
+.headingLine {
+  display: block;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.descWrapper {
+  margin-top: auto;
+  max-width: 38ch;
+  pointer-events: auto;
+}
+
+.paragraph {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 2rem;
+}
+
+.detailsMeta {
+  display: flex;
+  gap: 2rem;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.mediaCol {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70vw;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  z-index: 1;
+  transition: box-shadow .6s cubic-bezier(.16,1,.3,1);
+  -webkit-mask-image:
+    linear-gradient(
+      to left,
+      black 72%,
+      rgba(0,0,0,.95) 80%,
+      rgba(0,0,0,.55) 90%,
+      transparent 100%
+    );
+  mask-image:
+    linear-gradient(
+      to left,
+      black 72%,
+      rgba(0,0,0,.95) 80%,
+      rgba(0,0,0,.55) 90%,
+      transparent 100%
+    );
+}
+
+.mediaActive {
+  cursor: default;
+}
+
+.screenshot,
+.video {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  will-change: transform;
+
+  transition:
+    opacity .8s cubic-bezier(.16,1,.3,1),
+    transform .8s cubic-bezier(.16,1,.3,1);
+}
+
+.screenshotHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.videoVisible {
+  opacity: 1;
+}
+
+.overlay {
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at center,
+      transparent 0%,
+      rgba(0,0,0,.08) 55%,
+      rgba(0,0,0,.35) 100%);
+
+  opacity:.25;
+  pointer-events:none;
+}
+
+.playTrigger {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.playCircle {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.playIcon {
+  width: 24px;
+  height: 24px;
+  transform: translateX(2px);
+}
+
+.hoverMeta {
+  position: absolute;
+  bottom: 4rem;
+  left: var(--pad-x);
+  color: var(--paper);
+  opacity: 0;
+  transform: translateY(15px);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.metaLabel {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.metaTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 500;
+  margin: 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.metaSpec {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--amber);
+}
+
+.customControls {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  right: 3rem;
+  height: 50px;
+  background: rgba(11, 11, 11, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 1.5rem;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.controlsVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.controlBtn {
+  background: none;
+  border: none;
+  color: var(--paper);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.controlBtn:hover {
+  opacity: 1;
+}
+
+.controlIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.timelineTrack {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  cursor: pointer;
+}
+
+.timelineProgress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--amber);
+  transition: width 0.1s linear;
+}
+
+.timestamp {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--paper);
+  letter-spacing: 0.05em;
+  min-width: 35px;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .section {
+    height: auto;
+  }
+  .editorialGrid {
+    grid-template-columns: 1fr;
+  }
+  .contentCol {
+    padding: 6rem var(--pad-x) 3rem;
+  }
+  .mediaCol {
+    height: 60vh;
+    min-height: 400px;
+  }
+  .hoverMeta {
+    bottom: 2rem;
+    left: 2rem;
+  }
+  .customControls {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screenshot, .video, .customControls, .playTrigger, .hoverMeta {
+    transition: none !important;
+  }
+}
+
+.rennsportLogo {
+  position: relative;
+  margin-top: 2.5rem;
+  opacity: 0.75;
+  display: flex;
+  align-items: center;
+}
+
+.rennsportLogo img {
+  width: 130px;
+  height: auto;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.rennsportLogo img:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: white;
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  white-space: nowrap;
+}
+
+.rennsportLogo:hover .tooltip {
+  opacity: 1;
+}
+.customControls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px; 
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.controlsVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.controlBtn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.controlBtn:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.controlIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.timelineTrack {
+  flex-grow: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.timelineProgress {
+  height: 100%;
+  background-color: #e30613; 
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.timestamp {
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+  min-width: 32px;
+  text-align: right;
+}
+
+.muteBtn {
+  margin-left: 8px;
+}
