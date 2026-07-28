@@ -6,18 +6,12 @@ import { pauseOffscreen } from '../../utils/animationLifecycle';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Layer layout: 4 input → 6 hidden → 6 hidden → 3 output.
-// Declared at module scope so the array identity is stable across renders.
 const NEURAL_LAYERS = [4, 6, 6, 3];
 
 const SVG_WIDTH = 720;
 const SVG_HEIGHT = 280;
 const PAD_X = 90;
 
-/**
- * Pre-computes the neuron positions and fully-connected links for the
- * network. Called once via useMemo so the layout is stable across renders.
- */
 function buildNetwork(layers) {
   const neurons = [];
   const connections = [];
@@ -47,16 +41,6 @@ function buildNetwork(layers) {
   return { neurons, connections };
 }
 
-/**
- * NeuralStage
- * -----------
- * Interactive neural network.
- *  - Gentle pulsing on every neuron
- *  - Cursor movement propagates a signal through the nearest input neuron
- *  - Clicking anywhere triggers a full forward-pass animation
- *
- * Pure SVG. No fake graphs, no random floating numbers.
- */
 export default function NeuralStage() {
   const ref = useRef(null);
   const svgRef = useRef(null);
@@ -72,7 +56,6 @@ export default function NeuralStage() {
 
     if (reduced) return;
 
-    // Cache layout once; refresh on resize only — never mid-mousemove.
     let svgRect = svg.getBoundingClientRect();
     const refreshRect = () => {
       svgRect = svg.getBoundingClientRect();
@@ -80,7 +63,6 @@ export default function NeuralStage() {
     window.addEventListener('resize', refreshRect, { passive: true });
 
     const inputNodes = Array.from(svg.querySelectorAll('[data-layer="0"]'));
-    // Pre-parse data-y so mousemove never touches the DOM attribute repeatedly.
     const inputMeta = inputNodes.map((node) => ({
       node,
       y: parseFloat(node.getAttribute('data-y')),
@@ -109,7 +91,6 @@ export default function NeuralStage() {
       if (!nearest || nearest.id === lastNearestId) return;
       lastNearestId = nearest.id;
 
-      // Batch writes: de-emphasize, then emphasize nearest path.
       gsap.to(allCores, { fill: 'var(--ink)', duration: 0.4, overwrite: 'auto' });
       gsap.to(allLinks, { strokeOpacity: 0.1, duration: 0.3, overwrite: 'auto' });
 
@@ -140,7 +121,6 @@ export default function NeuralStage() {
     };
 
     const onMouseMove = (e) => {
-      // Read only clientY + cached rect height — no layout thrashing.
       pendingY = ((e.clientY - svgRect.top) / svgRect.height) * SVG_HEIGHT;
       if (moveRaf) return;
       moveRaf = requestAnimationFrame(() => {
@@ -217,7 +197,6 @@ export default function NeuralStage() {
           '-=0.8'
         );
 
-      // Gentle continuous pulse — paused while off-screen.
       const pulse = gsap.to(allCores, {
         scale: 1.18,
         opacity: 0.85,
@@ -271,7 +250,6 @@ export default function NeuralStage() {
           </radialGradient>
         </defs>
 
-        {/* connections */}
         {connections.map((c) => (
           <line
             key={`link-${c.id}`}
@@ -289,7 +267,6 @@ export default function NeuralStage() {
           />
         ))}
 
-        {/* neurons */}
         {neurons.map((n) => (
           <g
             key={`node-${n.id}`}

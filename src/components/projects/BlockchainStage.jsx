@@ -172,7 +172,6 @@ export default function BlockchainStage() {
           '-=0.2'
         );
 
-      // Continuous ambient loops — paused when the stage leaves the viewport.
       const glowPulse = gsap.to('.chain-glow', {
         opacity: 0.7,
         scale: 1.15,
@@ -315,86 +314,96 @@ export default function BlockchainStage() {
 
               <rect
                 className="block-fill"
-                x="-50"
-                y="-50"
-                width="100"
-                height="100"
-                rx="12"
-                fill="#07070a"
-                stroke={isHovered ? 'var(--amethyst, #9333ea)' : 'rgba(255,255,255,0.1)'}
-                strokeWidth={isHovered ? '2' : '1.2'}
+                x="-55"
+                y="-55"
+                width="110"
+                height="110"
+                rx="16"
+                fill="rgba(8,8,12,0.95)"
+                stroke={
+                  isHovered
+                    ? "var(--amethyst, #9333ea)"
+                    : "rgba(255,255,255,0.12)"
+                }
+                strokeWidth={isHovered ? 2 : 1}
               />
 
               <rect
-                x="-42"
-                y="-42"
-                width="84"
-                height="84"
-                rx="8"
+                x="-48"
+                y="-48"
+                width="96"
+                height="96"
+                rx="12"
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.04)"
-                strokeWidth="1"
-                pointerEvents="none"
+                stroke="rgba(255,255,255,0.05)"
+              />
+
+              <rect
+                x="-55"
+                y="-55"
+                width="110"
+                height="8"
+                rx="16"
+                fill="var(--amethyst, #9333ea)"
+                opacity=".35"
               />
 
               <g className="block-content">
-                <text
-                  x="-36"
-                  y="-26"
-                  textAnchor="start"
-                  fill="rgba(255, 255, 255, 0.3)"
-                  style={{
-                    fontFamily: 'monospace',
-                    fontSize: '9px',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  B_{String(block.index).padStart(2, '0')}
-                </text>
+                <g className="block-content">
+                  <text
+                    x="-42"
+                    y="-30"
+                    fill="rgba(255,255,255,.35)"
+                    style={{
+                      fontFamily: 'monospace',
+                      fontSize: '8px',
+                      fontWeight: 700,
+                      letterSpacing: '0.12em'
+                    }}
+                  >
+                    NODE // {String(block.index).padStart(3,'0')}
+                  </text>
 
-                <g style={{ opacity: isHovered ? 1 : 0 }}>
-                  <text x="-36" y="-10" fill="rgba(255,255,255,0.25)" style={{ fontFamily: 'monospace', fontSize: '7px', fontWeight: 700 }}>PRV</text>
-                  <text x="-12" y="-10" fill="rgba(255,255,255,0.7)" style={{ fontFamily: 'monospace', fontSize: '7px' }}>{block.prevHash.slice(0, 8)}</text>
+                  <text
+                    x="-42"
+                    y="-5"
+                    fill="white"
+                    style={{
+                      fontFamily:'monospace',
+                      fontSize:'9px',
+                      fontWeight:700
+                    }}
+                  >
+                    {block.data}
+                  </text>
 
-                  <text x="-36" y="2" fill="rgba(255,255,255,0.25)" style={{ fontFamily: 'monospace', fontSize: '7px', fontWeight: 700 }}>NON</text>
-                  <text x="-12" y="2" fill="rgba(255,255,255,0.7)" style={{ fontFamily: 'monospace', fontSize: '7px' }}>{block.nonce}</text>
+                  <text
+                    x="-42"
+                    y="18"
+                    fill="rgba(255,255,255,.3)"
+                    style={{
+                      fontFamily:'monospace',
+                      fontSize:'7px'
+                    }}
+                  >
+                    HASH
+                  </text>
 
-                  <text x="-36" y="14" fill="rgba(255,255,255,0.25)" style={{ fontFamily: 'monospace', fontSize: '7px', fontWeight: 700 }}>DAT</text>
-                  <text x="-12" y="14" fill="var(--amethyst, #9333ea)" style={{ fontFamily: 'monospace', fontSize: '7.5px', fontWeight: 'bold' }}>{block.data}</text>
-                </g>
-
-                <g style={{ opacity: isHovered ? 0 : 0.85 }}>
-                  <polygon
-                    points="0,-16 14,8 -14,8"
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.15)"
-                    strokeWidth="1.5"
-                  />
-                  <circle
-                    cx="0"
-                    cy="0"
-                    r="6"
+                  <text
+                    x="-42"
+                    y="34"
+                    className="typed-hash"
                     fill="var(--amethyst, #9333ea)"
-                    opacity="0.3"
-                  />
-                </g>
+                    style={{
+                      fontFamily:'monospace',
+                      fontSize:'9px',
+                      fontWeight:700
+                    }}
+                  >
+                    {isHovered ? block.hash : `0x${block.hash.slice(0,8)}`}
+                  </text>
 
-                <text
-                  x="0"
-                  y="28"
-                  textAnchor="middle"
-                  className="typed-hash"
-                  fill="rgba(255, 255, 255, 0.85)"
-                  style={{
-                    fontFamily: 'monospace',
-                    fontSize: '8px',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  {isHovered ? block.hash : `0x${block.hash.slice(0, 5)}`}
-                </text>
+                </g>
               </g>
             </g>
           );

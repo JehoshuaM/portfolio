@@ -1653,7 +1653,6 @@ html.lenis body {
   background: var(--bg);
 }
 
-/* Crop uses clip-path (set by GSAP) instead of animating layout width. */
 .hero-transition__crop {
   position: absolute;
   top: 0;
@@ -1664,7 +1663,6 @@ html.lenis body {
   overflow: hidden;
   background: var(--bg);
   z-index: 1;
-  /* will-change applied only while ScrollTrigger is active (JS) */
 }
 
 .hero-transition__stage {
@@ -1701,7 +1699,6 @@ html.lenis body {
 .hero-transition__reveal-track {
   display: flex;
   width: max-content;
-  /* will-change applied only while ScrollTrigger is active (JS) */
 }
 
 .hero-transition__reveal-set {
@@ -1724,20 +1721,33 @@ html.lenis body {
 
 .hero-transition__signature {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(260px, 34vw, 480px);
-  color: var(--amber);
-  opacity: 0.85;
-  z-index: 2;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+  z-index: 2;
+  color: var(--amber);
+  opacity: 0.8;
 }
 
 .hero-transition__signature svg {
-  width: 100%;
+  width: min(70vw, 700px);
   height: auto;
-  display: block;
+  overflow: visible;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black
+  );
+  mask-size: 200% 100%;
+  mask-position: 100% 0;
+}
+
+.hero-transition__signature path {
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -24,9 +24,10 @@ const PROJECTS = [
   {
     index: '02',
     title: 'NEURAL NETWORK',
-    status: 'In Development',
+    status: 'Completed',
     description:
       'Learning neural networks from first principles by implementing every component instead of relying on frameworks.',
+    repoHref: 'https://github.com/fabledruns/neuralnetwork',
     theme: 'amber',
     Stage: NeuralStage,
   },
