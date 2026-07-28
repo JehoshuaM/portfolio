@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hero from './components/Hero';
 import Intro from './components/Intro';
 import Interlude from './components/Interlude';
@@ -11,6 +13,8 @@ import TransitionBlend from './components/TransitionBlend';
 import FiveHundredths from './components/FiveHundredths';
 import HeroScrollTransition from './components/HeroScrollTransition';
 
+gsap.registerPlugin(ScrollTrigger);
+
 function App() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19,42 +23,43 @@ function App() {
       duration: prefersReducedMotion ? 0 : 1.2,
       smoothWheel: !prefersReducedMotion,
       smoothTouch: false,
-    })
+    });
 
-    let rafId = 0
+    // Drive Lenis from GSAP's ticker so scroll + ScrollTrigger share one rAF.
+    // Avoids dual animation loops fighting and reduces frame thrashing.
+    lenis.on('scroll', ScrollTrigger.update);
 
-    function raf(time) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
+    const tickerFn = (time) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(tickerFn);
+    gsap.ticker.lagSmoothing(0);
 
-    rafId = requestAnimationFrame(raf)
-
-    const links = document.querySelectorAll('a[href^="#"]')
+    const links = document.querySelectorAll('a[href^="#"]');
     const handleAnchorClick = (e) => {
-      const link = e.currentTarget
-      e.preventDefault()
+      const link = e.currentTarget;
+      e.preventDefault();
 
-      const target = document.querySelector(link.getAttribute('href'))
+      const target = document.querySelector(link.getAttribute('href'));
 
       if (target) {
         lenis.scrollTo(target, {
           duration: prefersReducedMotion ? 0 : 1.4,
-        })
+        });
       }
-    }
+    };
 
     links.forEach((link) => {
-      link.addEventListener('click', handleAnchorClick)
-    })
+      link.addEventListener('click', handleAnchorClick);
+    });
 
     return () => {
-      cancelAnimationFrame(rafId)
+      gsap.ticker.remove(tickerFn);
       links.forEach((link) => {
-        link.removeEventListener('click', handleAnchorClick)
-      })
-      lenis.destroy()
-    }
+        link.removeEventListener('click', handleAnchorClick);
+      });
+      lenis.destroy();
+    };
   }, []);
 
   return (

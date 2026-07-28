@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import usePrefersReducedMotion from './usePrefersReducedMotion';
+import { pauseOffscreen } from '../../utils/animationLifecycle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -97,30 +98,46 @@ export default function BlockchainStage() {
           duration: 0.8,
           ease: 'power3.inOut',
         })
-        .to('.energy-pulse-ambient', {
-          strokeDashoffset: 0,
-          duration: 1.4,
-          ease: 'power2.inOut',
-          stagger: 0.12,
-        }, '-=0.4')
-        .to('.chain-link', {
-          strokeWidth: 5,
-          stroke: 'var(--amethyst, #9333ea)',
-          opacity: 1,
-          duration: 0.2,
-          yoyo: true,
-          repeat: 1,
-          stagger: 0.08,
-        }, '-=1.2')
-        .to('.chain-block--last', {
-          opacity: 1,
-          duration: 0.4,
-        }, '-=0.6')
-        .to('.chain-block--last .block-fill', {
-          stroke: 'var(--amethyst, #9333ea)',
-          strokeWidth: 2,
-          duration: 0.3,
-        }, '-=0.4')
+        .to(
+          '.energy-pulse',
+          {
+            strokeDashoffset: 0,
+            duration: 1.4,
+            ease: 'power2.inOut',
+            stagger: 0.12,
+          },
+          '-=0.4'
+        )
+        .to(
+          '.chain-link',
+          {
+            strokeWidth: 5,
+            stroke: 'var(--amethyst, #9333ea)',
+            opacity: 1,
+            duration: 0.2,
+            yoyo: true,
+            repeat: 1,
+            stagger: 0.08,
+          },
+          '-=1.2'
+        )
+        .to(
+          '.chain-block--last',
+          {
+            opacity: 1,
+            duration: 0.4,
+          },
+          '-=0.6'
+        )
+        .to(
+          '.chain-block--last .block-fill',
+          {
+            stroke: 'var(--amethyst, #9333ea)',
+            strokeWidth: 2,
+            duration: 0.3,
+          },
+          '-=0.4'
+        )
         .to('.chain-block--last .block-fill', {
           fillOpacity: 1,
           strokeDasharray: 'none',
@@ -128,22 +145,35 @@ export default function BlockchainStage() {
           duration: 0.8,
           ease: 'power3.out',
         })
-        .to('.chain-block--last', {
-          scale: 1,
-          duration: 0.8,
-          ease: 'back.out(1.5)',
-        }, '-=0.8')
-        .to('.chain-block--last .block-content', {
-          opacity: 1,
-          duration: 0.5,
-        }, '-=0.3')
-        .from('.chain-block--last .typed-hash', {
-          textShadow: '0 0 10px var(--amethyst)',
-          opacity: 0,
-          duration: 1,
-        }, '-=0.2');
+        .to(
+          '.chain-block--last',
+          {
+            scale: 1,
+            duration: 0.8,
+            ease: 'back.out(1.5)',
+          },
+          '-=0.8'
+        )
+        .to(
+          '.chain-block--last .block-content',
+          {
+            opacity: 1,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        .from(
+          '.chain-block--last .typed-hash',
+          {
+            textShadow: '0 0 10px var(--amethyst)',
+            opacity: 0,
+            duration: 1,
+          },
+          '-=0.2'
+        );
 
-      gsap.to('.chain-glow', {
+      // Continuous ambient loops — paused when the stage leaves the viewport.
+      const glowPulse = gsap.to('.chain-glow', {
         opacity: 0.7,
         scale: 1.15,
         duration: 3,
@@ -151,15 +181,17 @@ export default function BlockchainStage() {
         repeat: -1,
         yoyo: true,
         stagger: 0.4,
+        transformOrigin: 'center center',
       });
 
-      gsap.to('.energy-pulse-ambient', {
+      const energyPulse = gsap.to('.energy-pulse', {
         strokeDashoffset: -200,
         duration: 2.5,
         ease: 'none',
         repeat: -1,
       });
 
+      pauseOffscreen(root, [glowPulse, energyPulse]);
     }, ref);
 
     return () => ctx.revert();
@@ -189,7 +221,7 @@ export default function BlockchainStage() {
             <stop offset="50%" stopColor="var(--amethyst, #9333ea)" stopOpacity="0.8" />
             <stop offset="100%" stopColor="var(--amethyst, #9333ea)" stopOpacity="0.15" />
           </linearGradient>
-          
+
           <radialGradient id="glow-gradient" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="var(--amethyst, #9333ea)" stopOpacity="0.35" />
             <stop offset="100%" stopColor="var(--amethyst, #9333ea)" stopOpacity="0" />
@@ -205,10 +237,12 @@ export default function BlockchainStage() {
         {blocks.slice(0, -1).map((_, i) => {
           const x1 = padX + i * spacing + 50;
           const x2 = padX + (i + 1) * spacing - 50;
+          const isLastLink = i === blocks.length - 2;
 
           return (
             <g key={i}>
               <line
+                className={`chain-link ${isLastLink ? 'chain-link--last' : ''}`}
                 x1={x1}
                 y1={blockY}
                 x2={x2}
@@ -226,7 +260,7 @@ export default function BlockchainStage() {
                 stroke="url(#link-gradient)"
                 strokeWidth="4"
                 opacity=".4"
-                filter="url(#blur)"
+                pointerEvents="none"
               />
 
               <line
@@ -239,6 +273,7 @@ export default function BlockchainStage() {
                 strokeWidth="3"
                 strokeDasharray="30 150"
                 strokeDashoffset="180"
+                pointerEvents="none"
               />
             </g>
           );
@@ -264,7 +299,6 @@ export default function BlockchainStage() {
               style={{
                 cursor: 'pointer',
                 outline: 'none',
-                transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
               <circle
@@ -275,8 +309,7 @@ export default function BlockchainStage() {
                 fill="url(#glow-gradient)"
                 pointerEvents="none"
                 style={{
-                  transition: 'opacity 0.4s ease',
-                  opacity: isHovered ? 1 : 0.4
+                  opacity: isHovered ? 1 : 0.4,
                 }}
               />
 
@@ -287,12 +320,9 @@ export default function BlockchainStage() {
                 width="100"
                 height="100"
                 rx="12"
-                fill="#07070a" 
+                fill="#07070a"
                 stroke={isHovered ? 'var(--amethyst, #9333ea)' : 'rgba(255,255,255,0.1)'}
                 strokeWidth={isHovered ? '2' : '1.2'}
-                style={{
-                  transition: 'stroke 0.3s ease, stroke-width 0.3s ease',
-                }}
               />
 
               <rect
@@ -317,19 +347,16 @@ export default function BlockchainStage() {
                     fontFamily: 'monospace',
                     fontSize: '9px',
                     fontWeight: 600,
-                    letterSpacing: '0.05em'
+                    letterSpacing: '0.05em',
                   }}
                 >
                   B_{String(block.index).padStart(2, '0')}
                 </text>
 
-                <g style={{
-                  transition: 'opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1)',
-                  opacity: isHovered ? 1 : 0
-                }}>
+                <g style={{ opacity: isHovered ? 1 : 0 }}>
                   <text x="-36" y="-10" fill="rgba(255,255,255,0.25)" style={{ fontFamily: 'monospace', fontSize: '7px', fontWeight: 700 }}>PRV</text>
                   <text x="-12" y="-10" fill="rgba(255,255,255,0.7)" style={{ fontFamily: 'monospace', fontSize: '7px' }}>{block.prevHash.slice(0, 8)}</text>
-                  
+
                   <text x="-36" y="2" fill="rgba(255,255,255,0.25)" style={{ fontFamily: 'monospace', fontSize: '7px', fontWeight: 700 }}>NON</text>
                   <text x="-12" y="2" fill="rgba(255,255,255,0.7)" style={{ fontFamily: 'monospace', fontSize: '7px' }}>{block.nonce}</text>
 
@@ -337,10 +364,7 @@ export default function BlockchainStage() {
                   <text x="-12" y="14" fill="var(--amethyst, #9333ea)" style={{ fontFamily: 'monospace', fontSize: '7.5px', fontWeight: 'bold' }}>{block.data}</text>
                 </g>
 
-                <g style={{
-                  transition: 'opacity 0.25s ease',
-                  opacity: isHovered ? 0 : 0.85
-                }}>
+                <g style={{ opacity: isHovered ? 0 : 0.85 }}>
                   <polygon
                     points="0,-16 14,8 -14,8"
                     fill="none"
@@ -366,7 +390,7 @@ export default function BlockchainStage() {
                     fontFamily: 'monospace',
                     fontSize: '8px',
                     fontWeight: 600,
-                    letterSpacing: '0.05em'
+                    letterSpacing: '0.05em',
                   }}
                 >
                   {isHovered ? block.hash : `0x${block.hash.slice(0, 5)}`}
@@ -377,15 +401,18 @@ export default function BlockchainStage() {
         })}
       </svg>
 
-      <p className="blockchain__hint" style={{
-        textAlign: 'center',
-        marginTop: '1.2rem',
-        fontSize: '11px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.15em',
-        color: 'rgba(255, 255, 255, 0.35)',
-        fontFamily: 'monospace'
-      }}>
+      <p
+        className="blockchain__hint"
+        style={{
+          textAlign: 'center',
+          marginTop: '1.2rem',
+          fontSize: '11px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          color: 'rgba(255, 255, 255, 0.35)',
+          fontFamily: 'monospace',
+        }}
+      >
         Interact with nodes • Scroll to sync ledger
       </p>
     </div>

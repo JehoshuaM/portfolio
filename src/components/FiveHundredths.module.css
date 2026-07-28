@@ -119,7 +119,7 @@
   object-fit: cover;
   object-position: center;
 
-  will-change: transform;
+  /* will-change applied by GSAP only during active hover/scrub transforms */
 
   transition:
     opacity .8s cubic-bezier(.16,1,.3,1),
@@ -271,8 +271,12 @@
   left: 0;
   top: 0;
   bottom: 0;
+  width: 100%;
   background: var(--amber);
-  transition: width 0.1s linear;
+  transform-origin: left center;
+  transform: scaleX(0);
+  /* scaleX instead of width — compositor-only, no layout thrash */
+  transition: transform 0.1s linear;
 }
 
 .timestamp {

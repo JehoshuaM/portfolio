@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import usePrefersReducedMotion from './usePrefersReducedMotion';
+import { pauseOffscreen } from '../../utils/animationLifecycle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,9 +43,13 @@ export default function GitStage() {
     if (reduced) return;
 
     const ctx = gsap.context(() => {
-      const paths = svg.querySelectorAll('.git-link');
+      const paths = Array.from(svg.querySelectorAll('.git-link'));
+
+      // Measure path lengths once up-front — never inside a tween callback.
+      const pathLengths = new Map();
       paths.forEach((p) => {
         const len = p.getTotalLength();
+        pathLengths.set(p, len);
         gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
       });
 
@@ -55,11 +60,7 @@ export default function GitStage() {
         repeat: -1,
         repeatDelay: 1.6,
         defaults: { ease: 'power2.out' },
-        scrollTrigger: {
-          trigger: root,
-          start: 'top 70%',
-          once: true,
-        },
+        paused: true,
       });
 
       COMMITS.forEach((commit) => {
@@ -81,22 +82,35 @@ export default function GitStage() {
 
       tl.to({}, { duration: 1.2 });
       tl.to(paths, {
-        strokeDashoffset: (i, el) => el.getTotalLength(),
+        // Use cached lengths — no layout reads during the animation frame.
+        strokeDashoffset: (i, el) => pathLengths.get(el) ?? 0,
         duration: 0.5,
         ease: 'power2.in',
       });
       tl.to(nodes, { scale: 0, opacity: 0, duration: 0.4, stagger: 0.04 }, '<');
 
       const head = svg.querySelector('.git-commit--head');
+      let headPulse = null;
       if (head) {
-        gsap.to(head, {
+        headPulse = gsap.to(head, {
           scale: 1.15,
           duration: 1.4,
           ease: 'sine.inOut',
           repeat: -1,
           yoyo: true,
           transformOrigin: 'center center',
+          paused: true,
         });
+      }
+
+      // Start looping only once the section enters view; pause when it leaves.
+      const visibility = pauseOffscreen(root, [tl, headPulse].filter(Boolean));
+
+      // Kick the first play when the stage first becomes visible via a one-shot ST
+      // if pauseOffscreen already saw it in-view.
+      if (visibility && visibility.isActive) {
+        tl.play();
+        headPulse?.play();
       }
     }, ref);
 

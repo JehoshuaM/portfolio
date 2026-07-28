@@ -1424,12 +1424,17 @@ html.lenis body {
     0 8px 24px rgba(0, 0, 0, 0.10),
     0 24px 48px rgba(0, 0, 0, 0.06);
   transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
-  will-change: transform;
 }
 
 .stage__repo:hover {
   transform: translateY(-2px);
   background: var(--amethyst);
+  /* Promote only during the short hover transition */
+  will-change: transform;
+}
+
+.stage__repo:not(:hover) {
+  will-change: auto;
 }
 
 .stage__repo:focus-visible {
@@ -1648,15 +1653,30 @@ html.lenis body {
   background: var(--bg);
 }
 
-.hero-transition__stage {
-  position: relative;
-  z-index: 1;
+/* Crop uses clip-path (set by GSAP) instead of animating layout width. */
+.hero-transition__crop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   height: 100%;
   overflow: hidden;
   background: var(--bg);
+  z-index: 1;
+  /* will-change applied only while ScrollTrigger is active (JS) */
+}
+
+.hero-transition__stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 100%;
+  transform: translateX(-50%);
   transform-origin: 50% 50%;
-  will-change: transform;
+  background: var(--bg);
+  filter: grayscale(0%);
   backface-visibility: hidden;
 }
 
@@ -1665,22 +1685,41 @@ html.lenis body {
   inset: 0;
   z-index: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
+  gap: clamp(0.5rem, 2vw, 2rem);
+  overflow: hidden;
   pointer-events: none;
+}
+
+.hero-transition__reveal-row {
+  overflow: hidden;
+  width: 100%;
+}
+
+.hero-transition__reveal-track {
+  display: flex;
+  width: max-content;
+  /* will-change applied only while ScrollTrigger is active (JS) */
+}
+
+.hero-transition__reveal-set {
+  display: flex;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-right: clamp(2rem, 6vw, 6rem);
 }
 
 .hero-transition__reveal-word {
   font-family: var(--font-accent);
   font-style: italic;
-  font-size: clamp(6rem, 22vw, 22rem);
-  line-height: 0.8;
-  letter-spacing: -0.03em;
+  font-size: clamp(3rem, 9vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
   color: var(--amber);
   opacity: 0.22;
   white-space: nowrap;
-  transform-origin: 50% 50%;
-  will-change: transform;
 }
 
 .hero-transition__signature {
@@ -1706,11 +1745,27 @@ html.lenis body {
     height: auto;
   }
 
-  .hero-transition__stage {
+  .hero-transition__crop {
+    position: relative;
+    left: 0;
+    transform: none;
+    width: 100%;
     height: auto;
+    overflow: visible;
+    clip-path: none !important;
   }
 
-  .hero-transition__reveal {
+  .hero-transition__stage {
+    position: relative;
+    left: 0;
+    width: 100%;
+    height: auto;
+    transform: none;
+    filter: none;
+  }
+
+  .hero-transition__reveal,
+  .hero-transition__signature {
     display: none;
   }
 }

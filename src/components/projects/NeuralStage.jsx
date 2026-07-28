@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import usePrefersReducedMotion from './usePrefersReducedMotion';
+import { pauseOffscreen } from '../../utils/animationLifecycle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,100 +71,125 @@ export default function NeuralStage() {
     if (!root || !svg) return;
 
     if (reduced) return;
-    const inputNodes = svg.querySelectorAll('[data-layer="0"]');
-    const onMouseMove = (e) => {
-      const rect = svg.getBoundingClientRect();
-      const my = ((e.clientY - rect.top) / rect.height) * SVG_HEIGHT;
 
-      // Find nearest input neuron by y
-        let nearest = null;
-        let nearestDist = Infinity;
-        inputNodes.forEach((node) => {
-          const ny = parseFloat(node.getAttribute('data-y'));
-          const dist = Math.abs(ny - my);
-          if (dist < nearestDist) {
-            nearestDist = dist;
-            nearest = node;
-          }
-        });
+    // Cache layout once; refresh on resize only — never mid-mousemove.
+    let svgRect = svg.getBoundingClientRect();
+    const refreshRect = () => {
+      svgRect = svg.getBoundingClientRect();
+    };
+    window.addEventListener('resize', refreshRect, { passive: true });
 
-        // De-emphasize all, then emphasize the nearest one
-        gsap.to(svg.querySelectorAll('.neural-node-core'), {
-          fill: 'var(--ink)',
-          duration: 0.4,
-        });
+    const inputNodes = Array.from(svg.querySelectorAll('[data-layer="0"]'));
+    // Pre-parse data-y so mousemove never touches the DOM attribute repeatedly.
+    const inputMeta = inputNodes.map((node) => ({
+      node,
+      y: parseFloat(node.getAttribute('data-y')),
+      core: node.querySelector('.neural-node-core'),
+      id: node.getAttribute('data-id'),
+    }));
 
-        if (nearest) {
-          const core = nearest.querySelector('.neural-node-core');
-          gsap.to(core, { fill: 'var(--amber)', duration: 0.3 });
+    const allCores = svg.querySelectorAll('.neural-node-core');
+    const allLinks = svg.querySelectorAll('.neural-link');
 
-          // Propagate: highlight outgoing connections from this neuron
-          const fromId = nearest.getAttribute('data-id');
-          const outgoing = svg.querySelectorAll(`.neural-link[data-from="${fromId}"]`);
-          gsap.to(svg.querySelectorAll('.neural-link'), {
-            strokeOpacity: 0.1,
-            duration: 0.3,
-          });
-          gsap.to(outgoing, { strokeOpacity: 0.55, duration: 0.3 });
+    let moveRaf = 0;
+    let pendingY = null;
+    let lastNearestId = null;
 
-          // Light up downstream neurons layer by layer
-          const downstream = new Set();
-          outgoing.forEach((l) => {
-            const toId = l.getAttribute('data-to');
-            const toNode = svg.querySelector(`.neural-node[data-id="${toId}"]`);
-            if (toNode) downstream.add(toNode);
-          });
-          downstream.forEach((node) => {
-            const core = node.querySelector('.neural-node-core');
-            gsap.to(core, { fill: 'var(--amethyst)', duration: 0.4, delay: 0.15 });
-          });
+    const applyNearest = (my) => {
+      let nearest = null;
+      let nearestDist = Infinity;
+      for (let i = 0; i < inputMeta.length; i++) {
+        const dist = Math.abs(inputMeta[i].y - my);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearest = inputMeta[i];
         }
-      };
+      }
 
-      // Click → forward pass
-      const onClick = () => {
-        // Kill any running forward pass
-        gsap.killTweensOf(svg.querySelectorAll('.neural-node-core'));
+      if (!nearest || nearest.id === lastNearestId) return;
+      lastNearestId = nearest.id;
 
-        const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-        layers.forEach((_, layerIdx) => {
-          const nodes = svg.querySelectorAll(`[data-layer="${layerIdx}"] .neural-node-core`);
-          const incomingLinks =
-            layerIdx === 0
-              ? []
-              : svg.querySelectorAll(`.neural-link[data-to-layer="${layerIdx}"]`);
+      // Batch writes: de-emphasize, then emphasize nearest path.
+      gsap.to(allCores, { fill: 'var(--ink)', duration: 0.4, overwrite: 'auto' });
+      gsap.to(allLinks, { strokeOpacity: 0.1, duration: 0.3, overwrite: 'auto' });
 
-          tl.to(
+      gsap.to(nearest.core, {
+        fill: 'var(--amber)',
+        duration: 0.3,
+        overwrite: 'auto',
+      });
+
+      const outgoing = svg.querySelectorAll(`.neural-link[data-from="${nearest.id}"]`);
+      gsap.to(outgoing, { strokeOpacity: 0.55, duration: 0.3, overwrite: 'auto' });
+
+      const downstreamCores = [];
+      outgoing.forEach((l) => {
+        const toId = l.getAttribute('data-to');
+        const toNode = svg.querySelector(`.neural-node[data-id="${toId}"]`);
+        const core = toNode?.querySelector('.neural-node-core');
+        if (core) downstreamCores.push(core);
+      });
+      if (downstreamCores.length) {
+        gsap.to(downstreamCores, {
+          fill: 'var(--amethyst)',
+          duration: 0.4,
+          delay: 0.15,
+          overwrite: 'auto',
+        });
+      }
+    };
+
+    const onMouseMove = (e) => {
+      // Read only clientY + cached rect height — no layout thrashing.
+      pendingY = ((e.clientY - svgRect.top) / svgRect.height) * SVG_HEIGHT;
+      if (moveRaf) return;
+      moveRaf = requestAnimationFrame(() => {
+        moveRaf = 0;
+        if (pendingY != null) applyNearest(pendingY);
+      });
+    };
+
+    const onClick = () => {
+      gsap.killTweensOf(allCores);
+
+      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+      layers.forEach((_, layerIdx) => {
+        const nodes = svg.querySelectorAll(`[data-layer="${layerIdx}"] .neural-node-core`);
+        const incomingLinks =
+          layerIdx === 0
+            ? []
+            : svg.querySelectorAll(`.neural-link[data-to-layer="${layerIdx}"]`);
+
+        tl.to(
+          incomingLinks,
+          { strokeOpacity: 0.75, duration: 0.35, stagger: 0.01 },
+          layerIdx * 0.35
+        )
+          .to(
             incomingLinks,
-            { strokeOpacity: 0.75, duration: 0.35, stagger: 0.01 },
+            { strokeOpacity: 0.1, duration: 0.6 },
+            layerIdx * 0.35 + 0.35
+          )
+          .to(
+            nodes,
+            {
+              fill: 'var(--amber)',
+              scale: 1.4,
+              duration: 0.4,
+              stagger: 0.03,
+              transformOrigin: 'center center',
+            },
             layerIdx * 0.35
           )
-            .to(
-              incomingLinks,
-              { strokeOpacity: 0.1, duration: 0.6 },
-              layerIdx * 0.35 + 0.35
-            )
-            .to(
-              nodes,
-              {
-                fill: 'var(--amber)',
-                scale: 1.4,
-                duration: 0.4,
-                stagger: 0.03,
-                transformOrigin: 'center center',
-              },
-              layerIdx * 0.35
-            )
-            .to(
-              nodes,
-              { fill: 'var(--ink)', scale: 1, duration: 0.6 },
-              layerIdx * 0.35 + 0.45
-            );
-        });
-      };
+          .to(
+            nodes,
+            { fill: 'var(--ink)', scale: 1, duration: 0.6 },
+            layerIdx * 0.35 + 0.45
+          );
+      });
+    };
 
     const ctx = gsap.context(() => {
-      // Reveal: connections draw in, neurons pop in
       const introTl = gsap.timeline({
         defaults: { ease: 'power3.out' },
         scrollTrigger: {
@@ -174,7 +200,7 @@ export default function NeuralStage() {
       });
 
       introTl
-        .from(svg.querySelectorAll('.neural-link'), {
+        .from(allLinks, {
           opacity: 0,
           duration: 1.1,
           stagger: 0.005,
@@ -191,8 +217,8 @@ export default function NeuralStage() {
           '-=0.8'
         );
 
-      // Gentle continuous pulse on each neuron
-      gsap.to(svg.querySelectorAll('.neural-node-core'), {
+      // Gentle continuous pulse — paused while off-screen.
+      const pulse = gsap.to(allCores, {
         scale: 1.18,
         opacity: 0.85,
         duration: 1.8,
@@ -203,8 +229,7 @@ export default function NeuralStage() {
         transformOrigin: 'center center',
       });
 
-      // Continuous subtle signal pulses on random connections
-      const links = svg.querySelectorAll('.neural-link');
+      const links = Array.from(allLinks);
       const linkPulseTl = gsap.timeline({ repeat: -1 });
       for (let i = 0; i < 4; i++) {
         const link = links[Math.floor(Math.random() * links.length)];
@@ -213,16 +238,20 @@ export default function NeuralStage() {
           .to(link, { strokeOpacity: 0.6, duration: 0.6 }, i * 0.8)
           .to(link, { strokeOpacity: 0.12, duration: 0.8 }, i * 0.8 + 0.6);
       }
+
+      pauseOffscreen(root, [pulse, linkPulseTl]);
     }, ref);
 
-    svg.addEventListener('mousemove', onMouseMove);
+    svg.addEventListener('mousemove', onMouseMove, { passive: true });
     svg.addEventListener('click', onClick);
 
     return () => {
+      window.removeEventListener('resize', refreshRect);
+      if (moveRaf) cancelAnimationFrame(moveRaf);
       svg.removeEventListener('mousemove', onMouseMove);
       svg.removeEventListener('click', onClick);
       ctx.revert();
-    }
+    };
   }, [reduced, layers]);
 
   return (

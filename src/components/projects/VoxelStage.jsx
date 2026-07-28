@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { ContactShadows, Environment, Lightformer } from '@react-three/drei';
 import { createNoise2D } from 'simplex-noise';
@@ -301,9 +301,24 @@ export default function VoxelStage() {
   const idleRef = useRef(0);
   const mouseRef = useRef({ x: 0, y: 0 });
   const tweenState = useRef({ progress: 0, entrance: 0, idle: 0 });
+  const boundsRef = useRef({ left: 0, top: 0, width: 1, height: 1 });
   const reduced = usePrefersReducedMotion();
+  // Stop the WebGL render loop while the stage is off-screen.
+  const [inView, setInView] = useState(false);
 
   const heights = useMemo(() => buildHeights(2026), []);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: '20% 0px', threshold: 0 }
+    );
+    io.observe(root);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     if (reduced) {
@@ -388,15 +403,38 @@ export default function VoxelStage() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const onMove = (e) => {
+
+    const refreshBounds = () => {
       const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
+      boundsRef.current = {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width || 1,
+        height: rect.height || 1,
+      };
+    };
+    refreshBounds();
+
+    const onMove = (e) => {
+      // Use cached bounds — no layout read on every pointermove.
+      const b = boundsRef.current;
+      const x = (e.clientX - b.left) / b.width;
+      const y = (e.clientY - b.top) / b.height;
       mouseRef.current.x = (x - 0.5) * 2;
       mouseRef.current.y = (y - 0.5) * 2;
     };
-    el.addEventListener('pointermove', onMove);
-    return () => el.removeEventListener('pointermove', onMove);
+
+    el.addEventListener('pointermove', onMove, { passive: true });
+    el.addEventListener('pointerenter', refreshBounds, { passive: true });
+    window.addEventListener('resize', refreshBounds, { passive: true });
+    window.addEventListener('scroll', refreshBounds, { passive: true });
+
+    return () => {
+      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerenter', refreshBounds);
+      window.removeEventListener('resize', refreshBounds);
+      window.removeEventListener('scroll', refreshBounds);
+    };
   }, []);
 
   return (
@@ -456,12 +494,13 @@ export default function VoxelStage() {
       <div className="voxel__stage">
         <Canvas
           shadows
-          dpr={[1, 2]}
+          dpr={[1, Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1)]}
+          frameloop={inView ? 'always' : 'never'}
           camera={{ position: CAMERA_START, fov: 32, near: 0.1, far: 100 }}
           gl={{
             antialias: true,
             alpha: true,
-            powerPreference: "high-performance",
+            powerPreference: 'high-performance',
           }}
         >
           <fog attach="fog" args={['#ffffff', 20, 42]} />

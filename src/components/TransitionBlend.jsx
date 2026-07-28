@@ -14,6 +14,8 @@ export default function TransitionBlend() {
     const lerp = (start, end, amount) => start + (end - start) * amount
 
     let rafId = 0
+    let visible = false
+
     const current = {
       x: 66,
       y: 72,
@@ -30,6 +32,12 @@ export default function TransitionBlend() {
     }
 
     const update = (time) => {
+      if (!visible) {
+        rafId = 0
+        return
+      }
+
+      // READ phase first (single layout read, no writes yet).
       const rect = element.getBoundingClientRect()
       const viewport = window.innerHeight || 1
       const total = rect.height + viewport
@@ -52,6 +60,7 @@ export default function TransitionBlend() {
       const lightStop = clamp(current.shift - current.width, 6, 78)
       const darkStop = clamp(current.shift + current.width, 26, 96)
 
+      // WRITE phase — all style mutations after reads, no layout queries after.
       element.style.setProperty('--blend-x', `${current.x.toFixed(2)}%`)
       element.style.setProperty('--blend-y', `${current.y.toFixed(2)}%`)
       element.style.setProperty('--blend-alpha', current.alpha.toFixed(3))
@@ -61,9 +70,33 @@ export default function TransitionBlend() {
       rafId = requestAnimationFrame(update)
     }
 
-    rafId = requestAnimationFrame(update)
+    const startLoop = () => {
+      if (!visible || rafId) return
+      rafId = requestAnimationFrame(update)
+    }
 
-    return () => cancelAnimationFrame(rafId)
+    const stopLoop = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+        rafId = 0
+      }
+    }
+
+    // Only run the rAF loop while this section is near the viewport.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting
+        if (visible) startLoop()
+        else stopLoop()
+      },
+      { rootMargin: '15% 0px', threshold: 0 }
+    )
+    io.observe(element)
+
+    return () => {
+      stopLoop()
+      io.disconnect()
+    }
   }, [])
 
   return <div ref={ref} className="transition-blend" aria-hidden="true" />

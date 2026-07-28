@@ -84,6 +84,9 @@ export default function FiveHundredths({
     if (videoActive) return;
     gsap.killTweensOf([imageRef.current, overlayRef.current, playBtnRef.current, metaRef.current]);
 
+    if (imageRef.current) imageRef.current.style.willChange = 'transform';
+    if (playBtnRef.current) playBtnRef.current.style.willChange = 'transform, opacity';
+
     gsap.to(imageRef.current, { scale: 1.03, duration: 0.8, ease: "power2.out" });
     gsap.to(overlayRef.current, { opacity: 0.45, duration: 0.5, ease: "power2.out" });
     gsap.to(playBtnRef.current, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.7)" });
@@ -94,9 +97,25 @@ export default function FiveHundredths({
     if (videoActive) return;
     gsap.killTweensOf([imageRef.current, overlayRef.current, playBtnRef.current, metaRef.current]);
 
-    gsap.to(imageRef.current, { scale: 1.0, duration: 0.8, ease: "power2.out" });
+    gsap.to(imageRef.current, {
+      scale: 1.0,
+      duration: 0.8,
+      ease: "power2.out",
+      onComplete: () => {
+        if (imageRef.current) imageRef.current.style.willChange = 'auto';
+      },
+    });
     gsap.to(overlayRef.current, { opacity: 0.2, duration: 0.5, ease: "power2.out" });
-    gsap.to(playBtnRef.current, { scale: 0.8, opacity: 0, y: 10, duration: 0.4, ease: "power2.in" });
+    gsap.to(playBtnRef.current, {
+      scale: 0.8,
+      opacity: 0,
+      y: 10,
+      duration: 0.4,
+      ease: "power2.in",
+      onComplete: () => {
+        if (playBtnRef.current) playBtnRef.current.style.willChange = 'auto';
+      },
+    });
     gsap.to(metaRef.current, { opacity: 0, y: 15, duration: 0.4, ease: "power2.in" });
   };
 
@@ -279,7 +298,10 @@ export default function FiveHundredths({
             </button>
             
             <div className={styles.timelineTrack}>
-              <div className={styles.timelineProgress} style={{ width: `${progress}%` }} />
+              <div
+                className={styles.timelineProgress}
+                style={{ transform: `scaleX(${Math.max(0, Math.min(1, progress / 100))})` }}
+              />
             </div>
 
             <span className={styles.timestamp}>{currentTime}</span>
