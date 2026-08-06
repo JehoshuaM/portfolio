@@ -8,9 +8,9 @@ import Interlude from './components/Interlude';
 import Positions from './components/Positions';
 import Stack from './components/Stack';
 import Projects from './components/Projects';
+import Inspirations from './components/Inspirations';
 import Contact from './components/Contact';
 import TransitionBlend from './components/TransitionBlend';
-import FiveHundredths from './components/FiveHundredths';
 import HeroScrollTransition from './components/HeroScrollTransition';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -77,7 +77,7 @@ function App() {
       <Positions />
       <Stack />
       <Projects />
-      <FiveHundredths screenshotUrl="/lapShot.png" videoUrl="/replay.webm" />
+      <Inspirations />
       <Interlude
         quote="UNFORTUNATELY, IT ALSO RUNS ON JAVASCRIPT."
         caption="post-credit"
