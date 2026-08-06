@@ -1168,6 +1168,7 @@ html.lenis body {
 
   .header__link:hover,
   .hero__cta-primary:hover,
+  .inspirations__link:hover .inspirations__name,
   .contact__link:hover {
     transform: none;
   }
@@ -1454,6 +1455,114 @@ html.lenis body {
   transform: translate(2px, -2px);
 }
 
+/* =========================================================================
+   INSPIRATIONS — typography poster of sites that set the bar.
+   ========================================================================= */
+
+.inspirations {
+  background: var(--bg);
+  padding-top: clamp(5rem, 12vw, 10rem);
+  padding-bottom: clamp(5rem, 12vw, 10rem);
+}
+
+.inspirations__header {
+  max-width: 40rem;
+  margin-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.inspirations__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 8vw, 6.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.inspirations__lede {
+  max-width: 36ch;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.inspirations__list {
+  list-style: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.inspirations__item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.inspirations__link {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  padding: clamp(1.35rem, 2.8vw, 2.1rem) 0;
+  transition: background 0.25s ease;
+}
+
+.inspirations__index {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  padding-top: 0.35em;
+}
+
+.inspirations__name {
+  font-family: var(--font-body);
+  font-size: clamp(1.55rem, 4.2vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--ink);
+  transition:
+    transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    color 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    letter-spacing 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.inspirations__arrow {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--muted);
+  opacity: 0;
+  transform: translate(-6px, 4px);
+  transition:
+    opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    color 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .inspirations__link:hover .inspirations__name {
+    transform: translateX(0.55rem);
+    color: var(--amethyst);
+    letter-spacing: -0.02em;
+  }
+
+  .inspirations__link:hover .inspirations__arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    color: var(--amethyst);
+  }
+
+  .inspirations__link:hover .inspirations__index {
+    color: var(--ink);
+  }
+}
+
+.inspirations__link:focus-visible .inspirations__name {
+  color: var(--amethyst);
+}
+
+.inspirations__link:focus-visible .inspirations__arrow {
+  opacity: 1;
+  transform: none;
+}
+
 .blockchain__hint,
 .neural__hint,
 .voxel__hint,
@@ -1634,6 +1743,10 @@ html.lenis body {
 
   .stage__desc {
     font-size: 0.9rem;
+  }
+
+  .inspirations__link {
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
   }
 
   .blockchain__hint,
